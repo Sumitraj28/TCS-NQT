@@ -1,5 +1,7 @@
-# TCS NQT 2026 — DSA Patterns Cheatsheet (Quick Reference)
-**Exam Focus: Quick Ref & Code Snippets for last-minute prep**
+# TCS NQT 2026 — DSA Patterns C++ Cheatsheet (Quick Reference)
+**Exam Focus: Quick Ref & C++ STL Templates for last-minute prep**
+
+This sheets is optimized in **C++ (4.9.2)** syntax for direct reference and last-minute study.
 
 ---
 
@@ -11,306 +13,425 @@
 | "circular array, pick elements" | Circular House Robber DP (2 runs) |
 | "minimum operations to transform" | BFS / Edit Distance DP |
 | "all subsets / all combinations" | Recursion + backtracking |
-| "K-th largest / smallest" | Min-heap of size K |
-| "sliding window maximum" | Deque monotonic |
+| "K-th largest / smallest" | Min-heap / Max-heap of size K |
 | "count paths in grid" | 2D DP |
-| "GCD of pair across two arrays" | Factor enumeration |
+| "GCD of pair across two arrays" | Divisor/multiple checking |
 | "maximize XOR" | Bit-by-bit greedy |
-| "task scheduler cooldown" | Max-heap + counter |
+| "task scheduler cooldown" | Max-heap + cooldown queue |
 | "palindrome substring" | Expand around center |
-| "minimum swaps to sort" | Cycle detection or BFS |
+| "minimum swaps to sort" | Cycle detection |
 | "subarray sum equals K" | Prefix sum + Hash map |
 | "shortest path in unweighted grid" | BFS with queue |
 | "detect cycle in undirected graph" | Union-Find (DSU) |
 | "prime numbers count / check" | Sieve of Eratosthenes |
-| "modular inverse / large exponents" | Modular exponentiation |
-| "longest increasing subsequence" | DP with binary search |
-| "merge overlapping intervals" | Sort by start time |
-| "check if loop exists in list" | Fast & Slow pointers |
-| "minimum path sum in grid" | 2D Grid DP |
-| "digit sum perfect square" | BFS / Digit DP |
-| "minimum swaps to center" | Manhattan distance |
-| "find duplicate in array" | Hashing / Floyd's Cycle |
-| "count set bits in number" | Bit manipulation |
 | "rotate array by K positions" | Array reversal template |
-| "equilibrium index in array" | Prefix sum tracking |
-| "subset sum equal to target" | Subset sum DP |
-| "job scheduling with deadlines" | Greedy with priority slots |
-| "caesar cipher decryption" | Modular character shifts |
+| "equilibrium index in array" | Left/Right sum tracking |
 
 ---
 
-## 💻 SECTION 2: Python Templates (Copy-Paste Ready)
+## 💻 SECTION 2: C++ Templates (Copy-Paste Ready)
 
 ### 1. Binary Search
-```python
-def binary_search(arr, target):
-    low, high = 0, len(arr) - 1
-    while low <= high:
-        mid = low + (high - low) // 2
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            low = mid + 1
-        else:
-            high = mid - 1
-    return -1
+```cpp
+#include <vector>
+using namespace std;
 
-def find_first_occurrence(arr, target):
-    low, high, ans = 0, len(arr) - 1, -1
-    while low <= high:
-        mid = low + (high - low) // 2
-        if arr[mid] == target:
-            ans = mid
-            high = mid - 1  # search left
-        elif arr[mid] < target:
-            low = mid + 1
-        else:
-            high = mid - 1
-    return ans
+int binarySearch(vector<int>& arr, int target) {
+    int low = 0, high = arr.size() - 1;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] == target) return mid;
+        else if (arr[mid] < target) low = mid + 1;
+        else high = mid - 1;
+    }
+    return -1;
+}
+
+int findFirstOccurrence(vector<int>& arr, int target) {
+    int low = 0, high = arr.size() - 1, ans = -1;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] == target) {
+            ans = mid;
+            high = mid - 1; // search left
+        } else if (arr[mid] < target) low = mid + 1;
+        else high = mid - 1;
+    }
+    return ans;
+}
 ```
 
 ### 2. BFS on 2D Grid
-```python
-from collections import deque
+```cpp
+#include <queue>
+#include <set>
+#include <vector>
+using namespace std;
 
-def bfs_grid(grid):
-    m, n = len(grid), len(grid[0])
-    queue = deque([(0, 0, 1)])  # r, c, dist
-    visited = {(0, 0)}
-    while queue:
-        r, c, dist = queue.popleft()
-        if r == m - 1 and c == n - 1:
-            return dist
-        for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:
-            nr, nc = r + dr, c + dc
-            if 0 <= nr < m and 0 <= nc < n and grid[nr][nc] == 1 and (nr, nc) not in visited:
-                visited.add((nr, nc))
-                queue.append((nr, nc, dist + 1))
-    return -1
+struct Cell {
+    int r, c, dist;
+};
+
+int bfsGrid(vector<vector<int>>& grid) {
+    int m = grid.size(), n = grid[0].size();
+    queue<Cell> q;
+    q.push({0, 0, 1});
+    vector<vector<bool>> visited(m, vector<bool>(n, false));
+    visited[0][0] = true;
+    
+    int dr[] = {-1, 1, 0, 0};
+    int dc[] = {0, 0, -1, 1};
+    
+    while (!q.empty()) {
+        Cell curr = q.front();
+        q.pop();
+        
+        if (curr.r == m - 1 && curr.c == n - 1) return curr.dist;
+        
+        for (int i = 0; i < 4; i++) {
+            int nr = curr.r + dr[i];
+            int nc = curr.c + dc[i];
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 1 && !visited[nr][nc]) {
+                visited[nr][nc] = true;
+                q.push({nr, nc, curr.dist + 1});
+            }
+        }
+    }
+    return -1;
+}
 ```
 
 ### 3. DFS (Recursive & Iterative)
-```python
-def dfs_recursive(graph, node, visited=None):
-    if visited is None: visited = set()
-    visited.add(node)
-    for neighbor in graph[node]:
-        if neighbor not in visited:
-            dfs_recursive(graph, neighbor, visited)
-    return visited
+```cpp
+#include <vector>
+#include <set>
+#include <stack>
+using namespace std;
 
-def dfs_iterative(graph, start):
-    visited, stack = set(), [start]
-    while stack:
-        node = stack.pop()
-        if node not in visited:
-            visited.add(node)
-            for neighbor in graph[node]:
-                if neighbor not in visited:
-                    stack.append(neighbor)
-    return visited
+void dfsRecursive(vector<vector<int>>& graph, int node, set<int>& visited) {
+    visited.insert(node);
+    for (int neighbor : graph[node]) {
+        if (visited.find(neighbor) == visited.end()) {
+            dfsRecursive(graph, neighbor, visited);
+        }
+    }
+}
+
+void dfsIterative(vector<vector<int>>& graph, int start, set<int>& visited) {
+    stack<int> s;
+    s.push(start);
+    while (!s.empty()) {
+        int node = s.top();
+        s.pop();
+        if (visited.find(node) == visited.end()) {
+            visited.insert(node);
+            for (int neighbor : graph[node]) {
+                if (visited.find(neighbor) == visited.end()) {
+                    s.push(neighbor);
+                }
+            }
+        }
+    }
+}
 ```
 
 ### 4. Dynamic Programming — 1D
-```python
-def fib_optimized(n):
-    if n <= 1: return n
-    prev2, prev1 = 0, 1
-    for _ in range(2, n + 1):
-        curr = prev2 + prev1
-        prev2 = prev1
-        prev1 = curr
-    return prev1
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+long long robLinear(vector<int>& nums, int start, int end) {
+    long long prev2 = 0, prev1 = 0;
+    for (int i = start; i <= end; i++) {
+        long long temp = max(prev1, prev2 + nums[i]);
+        prev2 = prev1;
+        prev1 = temp;
+    }
+    return prev1;
+}
 ```
 
 ### 5. Dynamic Programming — 2D Grid
-```python
-def min_path_sum(grid):
-    m, n = len(grid), len(grid[0])
-    dp = [[float('inf')] * n for _ in range(m)]
-    dp[0][0] = grid[0][0]
-    for i in range(m):
-        for j in range(n):
-            if i > 0: dp[i][j] = min(dp[i][j], dp[i-1][j] + grid[i][j])
-            if j > 0: dp[i][j] = min(dp[i][j], dp[i][j-1] + grid[i][j])
-    return dp[m-1][n-1]
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int minPathSum(vector<vector<int>>& grid) {
+    int m = grid.size(), n = grid[0].size();
+    vector<vector<int>> dp(m, vector<int>(n, 1e9));
+    dp[0][0] = grid[0][0];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i > 0) dp[i][j] = min(dp[i][j], dp[i-1][j] + grid[i][j]);
+            if (j > 0) dp[i][j] = min(dp[i][j], dp[i][j-1] + grid[i][j]);
+        }
+    }
+    return dp[m-1][n-1];
+}
 ```
 
 ### 6. Sliding Window — Fixed Size
-```python
-def max_sum_subarray(arr, k):
-    curr_sum = sum(arr[:k])
-    max_sum = curr_sum
-    for i in range(k, len(arr)):
-        curr_sum += arr[i] - arr[i-k]
-        max_sum = max(max_sum, curr_sum)
-    return max_sum
+```cpp
+#include <vector>
+#include <numeric>
+#include <algorithm>
+using namespace std;
+
+int maxSubarraySum(vector<int>& arr, int k) {
+    int n = arr.size();
+    if (n < k) return 0;
+    int curr_sum = 0;
+    for (int i = 0; i < k; i++) curr_sum += arr[i];
+    int max_sum = curr_sum;
+    for (int i = k; i < n; i++) {
+        curr_sum += arr[i] - arr[i-k];
+        max_sum = max(max_sum, curr_sum);
+    }
+    return max_sum;
+}
 ```
 
 ### 7. Sliding Window — Variable Size
-```python
-def length_of_longest_substring(s):
-    char_map = {}
-    left = max_len = 0
-    for right, char in enumerate(s):
-        if char in char_map:
-            left = max(left, char_map[char] + 1)
-        char_map[char] = right
-        max_len = max(max_len, right - left + 1)
-    return max_len
+```cpp
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+int longestUniqueSubstring(string s) {
+    unordered_map<char, int> char_map;
+    int left = 0, max_len = 0;
+    for (int right = 0; right < s.length(); right++) {
+        if (char_map.find(s[right]) != char_map.end()) {
+            left = max(left, char_map[s[right]] + 1);
+        }
+        char_map[s[right]] = right;
+        max_len = max(max_len, right - left + 1);
+    }
+    return max_len;
+}
 ```
 
 ### 8. Two Pointer
-```python
-def target_sum(arr, target):
-    left, right = 0, len(arr) - 1
-    while left < right:
-        s = arr[left] + arr[right]
-        if s == target: return left, right
-        elif s < target: left += 1
-        else: right -= 1
-    return -1, -1
+```cpp
+#include <vector>
+using namespace std;
+
+pair<int, int> targetSum(vector<int>& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    while (left < right) {
+        int sum = arr[left] + arr[right];
+        if (sum == target) return {left, right};
+        else if (sum < target) left++;
+        else right--;
+    }
+    return {-1, -1};
+}
 ```
 
-### 9. Max Heap / Min Heap
-```python
-import heapq
-from collections import Counter
+### 9. Max Heap / Min Heap (priority_queue)
+```cpp
+#include <queue>
+#include <unordered_map>
+#include <vector>
+using namespace std;
 
-def top_k_frequent(nums, k):
-    counts = Counter(nums)
-    # min-heap of size k
-    heap = []
-    for num, cnt in counts.items():
-        heapq.heappush(heap, (cnt, num))
-        if len(heap) > k:
-            heapq.heappop(heap)
-    return [x[1] for x in heap]
+vector<int> topKFrequent(vector<int>& nums, int k) {
+    unordered_map<int, int> counts;
+    for (int num : nums) counts[num]++;
+    
+    // min-heap storing pair of (count, element)
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    for (auto pair : counts) {
+        pq.push({pair.second, pair.first});
+        if (pq.size() > k) pq.pop();
+    }
+    vector<int> result;
+    while (!pq.empty()) {
+        result.push_back(pq.top().second);
+        pq.pop();
+    }
+    return result;
+}
 ```
 
 ### 10. Union-Find (DSU)
-```python
-class DSU:
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.rank = [0] * n
+```cpp
+#include <vector>
+#include <numeric>
+using namespace std;
 
-    def find(self, x):
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])  # path compression
-        return self.parent[x]
-
-    def union(self, x, y):
-        root_x = self.find(x)
-        root_y = self.find(y)
-        if root_x != root_y:
-            if self.rank[root_x] > self.rank[root_y]:
-                self.parent[root_y] = root_x
-            elif self.rank[root_x] < self.rank[root_y]:
-                self.parent[root_x] = root_y
-            else:
-                self.parent[root_y] = root_x
-                self.rank[root_x] += 1
-            return True
-        return False
+class DSU {
+    vector<int> parent, rank;
+public:
+    DSU(int n) {
+        parent.resize(n);
+        iota(parent.begin(), parent.end(), 0);
+        rank.assign(n, 0);
+    }
+    int find(int x) {
+        if (parent[x] != x) parent[x] = find(parent[x]); // Path compression
+        return parent[x];
+    }
+    bool unionSets(int x, int y) {
+        int rx = find(x), ry = find(y);
+        if (rx != ry) {
+            if (rank[rx] > rank[ry]) parent[ry] = rx;
+            else if (rank[rx] < rank[ry]) parent[rx] = ry;
+            else {
+                parent[ry] = rx;
+                rank[rx]++;
+            }
+            return true;
+        }
+        return false;
+    }
+};
 ```
 
 ### 11. GCD & LCM
-```python
-def gcd(a, b):
-    while b:
-        a, b = b, a % b
-    return a
+```cpp
+long long gcd(long long a, long long b) {
+    while (b != 0) {
+        long long t = a % b;
+        a = b;
+        b = t;
+    }
+    return a;
+}
 
-def lcm(a, b):
-    return (a * b) // gcd(a, b) if a and b else 0
+long long lcm(long long a, long long b) {
+    if (a == 0 || b == 0) return 0;
+    return (a / gcd(a, b)) * b;
+}
 ```
 
 ### 12. Bit Manipulation
-```python
-# Check if k-th bit is set
-is_set = lambda n, k: (n >> k) & 1
+```cpp
+// Check if k-th bit is set
+bool isBitSet(int n, int k) { return (n >> k) & 1; }
 
-# Set k-th bit
-set_bit = lambda n, k: n | (1 << k)
+// Set k-th bit
+int setBit(int n, int k) { return n | (1 << k); }
 
-# Clear k-th bit
-clear_bit = lambda n, k: n & ~(1 << k)
+// Clear k-th bit
+int clearBit(int n, int k) { return n & ~(1 << k); }
 
-# Toggle k-th bit
-toggle_bit = lambda n, k: n ^ (1 << k)
-
-# Count set bits
-count_set_bits = lambda n: bin(n).count('1')
+// Count set bits
+int countSetBits(int n) {
+    int count = 0;
+    while (n) {
+        n &= (n - 1);
+        count++;
+    }
+    return count;
+}
 ```
 
 ### 13. Circular Array DP (House Robber II)
-```python
-def rob_linear(nums):
-    p2, p1 = 0, 0
-    for x in nums:
-        p2, p1 = p1, max(p1, p2 + x)
-    return p1
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-def rob_circular(nums):
-    if not nums: return 0
-    if len(nums) == 1: return nums[0]
-    return max(rob_linear(nums[:-1]), rob_linear(nums[1:]))
+long long robLinear(vector<int>& nums, int s, int e) {
+    long long p2 = 0, p1 = 0;
+    for (int i = s; i <= e; i++) {
+        long long temp = max(p1, p2 + nums[i]);
+        p2 = p1;
+        p1 = temp;
+    }
+    return p1;
+}
+
+long long robCircular(vector<int>& nums) {
+    int n = nums.size();
+    if (n == 0) return 0;
+    if (n == 1) return nums[0];
+    return max(robLinear(nums, 0, n - 2), robLinear(nums, 1, n - 1));
+}
 ```
 
-### 14. String Palindrome Expand (Expand Around Center)
-```python
-def expand(s, l, r):
-    while l >= 0 and r < len(s) and s[l] == s[r]:
-        l, r = l - 1, r + 1
-    return s[l + 1 : r]
+### 14. String Palindrome Expand
+```cpp
+#include <string>
+using namespace std;
+
+string expand(string s, int l, int r) {
+    while (l >= 0 && r < s.length() && s[l] == s[r]) {
+        l--;
+        r++;
+    }
+    return s.substr(l + 1, r - l - 1);
+}
 ```
 
 ### 15. Prefix Sum (1D & 2D)
-```python
-def get_prefix_sum(arr):
-    prefix = [0] * (len(arr) + 1)
-    for i, x in enumerate(arr):
-        prefix[i+1] = prefix[i] + x
-    return prefix  # query sum(i to j) = prefix[j+1] - prefix[i]
+```cpp
+#include <vector>
+using namespace std;
+
+vector<long long> getPrefixSum(vector<int>& arr) {
+    int n = arr.size();
+    vector<long long> prefix(n + 1, 0);
+    for (int i = 0; i < n; i++) prefix[i+1] = prefix[i] + arr[i];
+    return prefix;
+}
 ```
 
 ### 16. Modular Arithmetic
-```python
-# Fast Modulo Exponentiation (a^b % mod)
-mod_pow = lambda a, b, mod: pow(a, b, mod)
-
-# Modulo Inverse (for prime mod)
-mod_inv = lambda a, mod: pow(a, mod - 2, mod)
+```cpp
+long long powerMod(long long base, long long exp, long long mod) {
+    long long res = 1;
+    base %= mod;
+    while (exp > 0) {
+        if (exp % 2 == 1) res = (res * base) % mod;
+        base = (base * base) % mod;
+        exp /= 2;
+    }
+    return res;
+}
 ```
 
 ### 17. Sieve of Eratosthenes
-```python
-def sieve(n):
-    primes = [True] * (n + 1)
-    primes[0] = primes[1] = False
-    for p in range(2, int(n**0.5) + 1):
-        if primes[p]:
-            for i in range(p*p, n + 1, p):
-                primes[i] = False
-    return [i for i, x in enumerate(primes) if x]
+```cpp
+#include <vector>
+using namespace std;
+
+vector<int> getPrimes(int n) {
+    vector<bool> isPrime(n + 1, true);
+    isPrime[0] = isPrime[1] = false;
+    for (int p = 2; p * p <= n; p++) {
+        if (isPrime[p]) {
+            for (int i = p * p; i <= n; i += p) {
+                isPrime[i] = false;
+            }
+        }
+    }
+    vector<int> primes;
+    for (int i = 2; i <= n; i++) {
+        if (isPrime[i]) primes.push_back(i);
+    }
+    return primes;
+}
 ```
 
 ### 18. Fast Input Reading
-```python
-import sys
+```cpp
+#include <iostream>
+using namespace std;
 
-def fast_read():
-    # Fetch all whitespace-separated tokens at once
-    input_data = sys.stdin.read().split()
-    if not input_data: return []
-    return input_data
+void fastIO() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+}
 ```
 
 ---
 
-## ⏱️ SECTION 3: Complexity Quick Reference
+## ⏱️ SECTION 3: Complexity & Safe Constraints Reference
 
 | Algorithm / Pattern | Time Complexity | Space Complexity | Max Safe $N$ in 1 Second |
 | :--- | :--- | :--- | :--- |
@@ -322,88 +443,19 @@ def fast_read():
 | **2D Dynamic Programming** | $O(N^2)$ | $O(N^2)$ | $N \le 1,000$ |
 | **Sliding Window** | $O(N)$ | $O(1)$ | $N \le 10^7$ |
 | **Heap-based $O(N \log K)$** | $O(N \log K)$ | $O(K)$ | $N \le 10^6$ |
-| **Sieve of Eratosthenes** | $O(N \log \log N)$ | $O(N)$ | $N \le 10^6$ |
-| **Union-Find (DSU)** | $O(N \cdot \alpha(N)) \approx O(N)$ | $O(N)$ | $N \le 10^6$ |
 
 ---
 
-## ⚠️ SECTION 4: Edge Cases — Private Test Case Killers
+## ⚠️ SECTION 4: Common C++ Bugs in TCS NQT
 
-1. **Array Problems**:
-   * *N = 0 / Empty Array*: Ensure loops do not execute on empty slices.
-   * *N = 1*: Check if first-index accesses are out of bounds.
-   * *All Identical Elements*: Check if second largest/smallest filters duplicates.
-   * *Negative Numbers*: Initialize maximum trackers to `float('-inf')` (NOT `0`).
-2. **String Problems**:
-   * *Empty String*: Return empty results immediately.
-   * *Case Sensitivity*: Normalize letters using `.lower()` or `.upper()` if needed.
-   * *Whitespace Handling*: Ensure string splits strip correct white spaces.
-3. **Number Problems**:
-   * *N = 0 / N = 1*: Verify basic properties (such as prime status or Fibonacci terms).
-   * *Large Numbers ($N \ge 10^9$)*: Avoid running $O(N)$ loops; use constant mathematical formulas.
-4. **Circular Problems**:
-   * *Small Arrays ($N < 3$)*: Handle explicitly before invoking circular index splits.
-5. **GCD Problems**:
-   * *Division by Zero*: Never calculate GCD/LCM of zero elements.
-6. **Matrix Problems**:
-   * *1×1 Matrix*: Center is at $(0,0)$; ensure distance computations handle this correctly.
-   * *Multiple Maxima*: Locate all and compute minimum Manhattan distance.
-7. **DP Problems**:
-   * *Base Cases*: Set `dp[0]` and `dp[1]` manually before entering the loop.
-
----
-
-## 💡 SECTION 5: Common Python Bugs in TCS NQT
-
-1. **Type Mismatch on Input**: `input()` returns a string. Convert to integer using `int(input())` when parsing values.
-2. **Trailing Newlines**: `print(ans)` outputs a trailing newline. For strict whitespace verification, use `print(ans, end="")`.
-3. **Loop Range Boundaries**: `range(a, b)` does not include `b`. Use `range(a, b + 1)` for inclusive loops.
-4. **List Mutations**: Never add/remove elements from a list while iterating over it. Iterate over a copy: `for x in arr[:]`.
-5. **Division Types**: `/` returns a float. Always use `//` for integer floor division (e.g. index calculations).
-6. **Square Root Precision**: `math.sqrt()` is prone to floating-point errors. Use `math.isqrt(n)` for integer perfect square checks.
-7. **Recursion Limit**: Python's default limit is 1000. Write `sys.setrecursionlimit(10**6)` at the top of your code for recursive scripts.
-8. **Hash Map Key Errors**: Accessing keys that do not exist raises `KeyError`. Use `d.get(key, default)` or `defaultdict`.
-9. **Heap Q Order**: `heapq` in Python creates a MIN-heap. To build a MAX-heap, push negative values: `heapq.heappush(heap, -val)`.
-
----
-
-## 📅 SECTION 6: 5-Day Study Integration
-
-### Study Focus mapping
-* **Day 1: Number Properties & Math** $\to$ Prepares for Numerical Ability divisibility, primes, HCF/LCM, and coding easy properties.
-* **Day 2: Array Manipulation** $\to$ Core bread-and-butter patterns (Equilibrium point, sliding windows, rotations).
-* **Day 3: String Parsing** $\to$ Decryption, anagrams, palindromic checks.
-* **Day 4: Sorting & Hashing** $\to$ GCD pairs, heap priorities, duplicate checks.
-* **Day 5: Dynamic Programming & Matrices** $\to$ Advanced paths, house robber variants, swaps to center.
-
----
-
-### 🔗 LeetCode $\to$ TCS NQT Mapping
-
-| LeetCode Problem | TCS NQT Focus Pattern |
-| :--- | :--- |
-| **LC 198. House Robber** | Linear non-adjacent element selection DP. |
-| **LC 213. House Robber II** | Circular non-adjacent element selection DP. |
-| **LC 70. Climbing Stairs** | 1D Dynamic Programming. |
-| **LC 322. Coin Change** | Minimum steps / coins DP. |
-| **LC 5. Longest Palindromic Substring** | Expand Around Center string operations. |
-| **LC 242. Valid Anagram** | Frequency count / sorting comparison. |
-| **LC 189. Rotate Array** | Circular shift / array reversal. |
-| **LC 64. Minimum Path Sum** | 2D Grid DP. |
-| **LC 54. Spiral Matrix** | 2D Matrix traversal simulation. |
-| **LC 621. Task Scheduler** | Max-heap task scheduling with cooldown. |
-| **LC 191. Number of 1 Bits** | Bit counting. |
-| **LC 268. Missing Number** | Mathematical sum tracking. |
-| **LC 48. Rotate Image** | Matrix transposition + reverse. |
-| **LC 1. Two Sum** | Two-pointer / Hash map check. |
-| **LC 204. Count Primes** | Sieve of Eratosthenes. |
-| **LC 72. Edit Distance** | 2D DP string transformations. |
-| **LC 200. Number of Islands** | Grid DFS/BFS. |
-| **LC 442. Find All Duplicates** | Cyclic sort / array indexing. |
-| **LC 56. Merge Intervals** | Sort-based greedy intervals. |
-| **LC 347. Top K Frequent** | Min-heap frequency tracking. |
-| **LC 238. Product of Array Except Self** | Prefix & Suffix product arrays. |
-| **LC 724. Find Pivot Index** | Equilibrium index lookup. |
-| **LC 136. Single Number** | XOR bit manipulation properties. |
-| **LC 9. Palindrome Number** | Digit modular reversal. |
-| **LC 1097. DSU / Relations** | Union-Find components tracking. |
+1. **Integer Overflow**: Using standard `int` instead of `long long`. For sums, multiplications, or modular exponentiations, always use `long long` variables.
+2. **Buffer Issues in `getline()`**: Mixing `cin >>` and `getline()` causes the trailing newline to be read. Write `cin.ignore()` before invoking `getline()`.
+3. **Out-of-bounds in Arrays/Vectors**: Accessing `arr[size]` causes runtime errors. Use `arr.at(idx)` or verify indices manually.
+4. **Incorrect STL Sorting**: Sorting a vector of structs requires custom comparators. Ensure the comparator returns `false` for equal values to prevent strict weak ordering crashes.
+5. **Slow I/O Overhead**: For large test cases, C++ stream overhead causes TLE. Unlink them immediately inside `main()` using:
+   ```cpp
+   ios_base::sync_with_stdio(false);
+   cin.tie(NULL);
+   ```
+6. **Forgetting `return 0;`**: Standard compilers in NQT platforms require the `main()` function to return `0`.
+7. **Modulus of Negative Numbers**: In C++, `-5 % 3` returns `-2` instead of `1`. Correct negative modulus arithmetic using `(val % mod + mod) % mod`.

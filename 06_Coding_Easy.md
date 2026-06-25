@@ -1,276 +1,325 @@
-# TCS NQT 2026 — Easy Coding Complete Guide
-**Exam Focus: Arrays, Strings, & Math (1 Question, 35 Minutes)**
+# TCS NQT 2026 — Easy Coding Complete C++ Guide
+**Exam Focus: Arrays, Strings, & Math in C++ (1 Question, 35 Minutes)**
+
+This guide has been prepared entirely in **C++ (4.9.2)** to help you master the Easy Coding section. Under the exam interface, you must read inputs from standard input and print output to standard output.
+
+> [!IMPORTANT]
+> **TCS Compiler Rule**: You must click `"Compile Code"` AND `"Save Code"` (or `"Submit Code"`). If you do not click Save/Submit, your code will not be evaluated and you will get 0 marks.
 
 ---
 
-## 💻 PART A: Topic-by-Topic Notes + Python Solutions
+## 💻 PART A: Topic-by-Topic Notes + C++ Solutions
 
 ### 1. Circular Array / House Robber Variant
-* **Core Concept**: Solves optimization problems on circular structures where adjacent elements cannot be chosen. 
-* **Python Solution Template**:
-  ```python
-  def house_robber_1(nums):
-      prev2, prev1 = 0, 0
-      for num in nums:
-          temp = max(prev1, prev2 + num)
-          prev2 = prev1
-          prev1 = temp
-      return prev1
+* **Core Concept**: Maximizing a sum from a circular array where adjacent elements cannot be selected.
+* **C++ Solution Template**:
+  ```cpp
+  #include <iostream>
+  #include <vector>
+  #include <algorithm>
 
-  def house_robber_2(nums):
-      if len(nums) == 1:
-          return nums[0]
-      return max(house_robber_1(nums[:-1]), house_robber_1(nums[1:]))
+  using namespace std;
+
+  int solveLinear(vector<int>& nums, int start, int end) {
+      int prev2 = 0, prev1 = 0;
+      for (int i = start; i <= end; i++) {
+          int temp = max(prev1, prev2 + nums[i]);
+          prev2 = prev1;
+          prev1 = temp;
+      }
+      return prev1;
+  }
+
+  int robCircular(vector<int>& nums) {
+      int n = nums.size();
+      if (n == 0) return 0;
+      if (n == 1) return nums[0];
+      return max(solveLinear(nums, 0, n - 2), solveLinear(nums, 1, n - 1));
+  }
   ```
 * **Edge Cases to Handle**: Single element ($N=1$), empty input, all zeros.
-* **TCS NQT Trap**: Large constraints (e.g. $N = 10^9$) where $O(N)$ dynamic programming causes Time Limit Exceeded (TLE) or Memory Limit Exceeded (MLE). You must find a mathematical formula (e.g. arithmetic series or odd/even indexes) instead of running a loop.
-* **PYQ-style Problems**:
-  1. **Circular Sum Skip**: Find max sum skipping neighbors.  
-     *Sol*: Use the template above. It excludes the first element in one run and the last in another, returning the max.
-  2. **Alternating Array**: If array is circular, select elements to maximize sum.  
-     *Explanation*: Uses $O(N)$ space but can be optimized to $O(1)$ variables `prev1`, `prev2`.
+* **TCS NQT Trap**: For large constraints ($N = 10^9$), running a DP loop will result in TLE/MLE. Use a mathematical formula or index-based sum instead of looping.
 
 ---
 
 ### 2. Number Properties
-* **Core Concept**: Checking mathematical properties of integers using loops, modulo, and division.
-* **Python Solution Template (Efficient Prime Check)**:
-  ```python
-  def is_prime(n):
-      if n <= 1:
-          return False
-      if n <= 3:
-          return True
-      if n % 2 == 0 or n % 3 == 0:
-          return False
-      i = 5
-      while i * i <= n:
-          if n % i == 0 or n % (i + 2) == 0:
-              return False
-          i += 6
-      return True
+* **Core Concept**: Modulo arithmetic, digit sum extractions, and square root limits.
+* **C++ Solution Template (Prime Check)**:
+  ```cpp
+  #include <iostream>
+
+  using namespace std;
+
+  bool isPrime(int n) {
+      if (n <= 1) return false;
+      if (n <= 3) return true;
+      if (n % 2 == 0 || n % 3 == 0) return false;
+      for (int i = 5; i * i <= n; i += 6) {
+          if (n % i == 0 || n % (i + 2) == 0) return false;
+      }
+      return true;
+  }
   ```
-* **Edge Cases**: $N \le 1$, negative numbers, extremely large inputs.
-* **TCS NQT Trap**: Using $O(N)$ loop for prime checking. It will fail on large prime test cases; always use the $O(\sqrt{N})$ template.
-* **PYQ-style Problems**:
-  1. **Armstrong Check**: Sum of digits raised to power of digit count equals number.  
-     *Sol*: Convert to string, compute power sum, compare to original.
-  2. **Happy Number Check**: Replace number by sum of squares of digits, repeat. If it reaches 1, it is happy.  
-     *Sol*: Use a hash set to track visited values. If a value repeats, a cycle is formed, and it is not happy.
+* **Edge Cases**: $N \le 1$, negative numbers, extremely large values.
+* **TCS NQT Trap**: Using a simple $O(N)$ loop for primality checks will fail on large prime test cases. Always use the $O(\sqrt{N})$ loop template.
 
 ---
 
 ### 3. String Operations
-* **Core Concept**: String slicing, hash maps for frequencies, and expansion techniques.
-* **Python Solution Template (Anagram Check)**:
-  ```python
-  def is_anagram(s1, s2):
-      return sorted(s1.replace(" ", "").lower()) == sorted(s2.replace(" ", "").lower())
+* **Core Concept**: Slicing, character frequency tracking, and sliding windows.
+* **C++ Solution Template (Anagram Check)**:
+  ```cpp
+  #include <iostream>
+  #include <string>
+  #include <vector>
+  #include <algorithm>
+
+  using namespace std;
+
+  bool isAnagram(string s1, string s2) {
+      // Remove spaces and convert to lowercase
+      string clean1 = "", clean2 = "";
+      for (char c : s1) if (c != ' ') clean1 += tolower(c);
+      for (char c : s2) if (c != ' ') clean2 += tolower(c);
+      
+      if (clean1.length() != clean2.length()) return false;
+      
+      vector<int> count(26, 0);
+      for (char c : clean1) count[c - 'a']++;
+      for (char c : clean2) count[c - 'a']--;
+      
+      for (int val : count) {
+          if (val != 0) return false;
+      }
+      return true;
+  }
   ```
-* **Edge Cases**: Case-sensitivity, white spaces, punctuation.
-* **TCS NQT Trap**: Using nested loops $O(N^2)$ for substring lookups, which times out on strings of length $10^4$.
-* **PYQ-style Problems**:
-  1. **Longest Palindromic Substring**: Find longest palindrome inside string.  
-     *Sol*: Expand around center method in $O(N^2)$.
-  2. **Caesar Cipher Decryption**: Decrypt by shifting characters.  
-     *Sol*: Shift using `ord()` and `chr()`, wrapping around using modulo 26.
+* **Edge Cases**: Empty strings, mixed case, white spaces.
+* **TCS NQT Trap**: Using nested loops ($O(N^2)$) to compare string character counts will time out. Use a frequency vector of size 26 for $O(N)$ execution.
 
 ---
 
 ### 4. Array Basics
-* **Core Concept**: Traversal, tracking pointers, and arithmetic sums.
-* **Python Solution Template (Second Largest)**:
-  ```python
-  def second_largest(arr):
-      if len(arr) < 2:
-          return -1
-      first = second = float('-inf')
-      for x in arr:
-          if x > first:
-              second = first
-              first = x
-          elif x > second and x != first:
-              second = x
-      return second if second != float('-inf') else -1
+* **Core Concept**: Pointers, relative ordering, and linear scans.
+* **C++ Solution Template (Second Largest)**:
+  ```cpp
+  #include <iostream>
+  #include <vector>
+  #include <climits>
+
+  using namespace std;
+
+  int getSecondLargest(vector<int>& arr) {
+      int n = arr.size();
+      if (n < 2) return -1;
+      
+      int first = INT_MIN;
+      int second = INT_MIN;
+      
+      for (int i = 0; i < n; i++) {
+          if (arr[i] > first) {
+              second = first;
+              first = arr[i];
+          } else if (arr[i] > second && arr[i] != first) {
+              second = arr[i];
+          }
+      }
+      return (second == INT_MIN) ? -1 : second;
+  }
   ```
-* **Edge Cases**: Array size $< 2$, all elements equal, negative inputs.
-* **TCS NQT Trap**: Sorting the array first ($O(N \log N)$), which takes too long for large inputs and fails if duplicates exist. Use $O(N)$ single pass.
-* **PYQ-style Problems**:
-  1. **Rotate Array**: Shift elements by $K$ positions.  
-     *Sol*: Reverse parts of the array in place in $O(N)$ time and $O(1)$ space.
-  2. **Find Missing Number**: Find missing in $1$ to $N$.  
-     *Sol*: Use mathematical sum $\frac{N(N+1)}{2} - \text{actual\_sum}$.
+* **Edge Cases**: Less than 2 elements, all elements equal, negative elements.
+* **TCS NQT Trap**: Sorting the array first ($O(N \log N)$), which times out on large arrays and fails to easily filter duplicate values. Use a single pass $O(N)$ solution.
 
 ---
 
 ### 5. GCD / LCM / HCF Problems
-* **Core Concept**: Euclidean algorithm for greatest common divisors.
-* **Python Solution Template**:
-  ```python
-  def gcd(a, b):
-      while b:
-          a, b = b, a % b
-      return a
+* **Core Concept**: Euclidean division algorithm.
+* **C++ Solution Template**:
+  ```cpp
+  #include <iostream>
 
-  def lcm(a, b):
-      return (a * b) // gcd(a, b)
+  using namespace std;
+
+  long long getGCD(long long a, long long b) {
+      while (b != 0) {
+          long long temp = a % b;
+          a = b;
+          b = temp;
+      }
+      return a;
+  }
+
+  long long getLCM(long long a, long long b) {
+      if (a == 0 || b == 0) return 0;
+      return (a * b) / getGCD(a, b);
+  }
   ```
-* **Edge Cases**: Zero values, negative values.
-* **TCS NQT Trap**: Division by zero errors when computing LCM. Always check if $a$ or $b$ is zero.
-* **PYQ-style Problems**:
-  1. **GCD of Array**: Find HCF of multiple integers.  
-     *Sol*: Use `functools.reduce` to apply GCD across the array.
-  2. **Fraction Simplification**: Reduce $A/B$ to simplest form.  
-     *Sol*: Divide both by their GCD.
+* **Edge Cases**: Zero values, large numbers causing overflow.
+* **TCS NQT Trap**: Multiplying `a * b` without casting to `long long` first, which causes integer overflow. Always compute LCM as `(a / GCD) * b` to prevent intermediate overflows.
 
 ---
 
 ### 6. Fibonacci & Factorial
-* **Core Concept**: Linear recurrence and multiplication chains.
-* **Python Solution Template (Iterative Fibonacci)**:
-  ```python
-  def fibonacci(n):
-      if n <= 0:
-          return 0
-      if n == 1:
-          return 1
-      prev2, prev1 = 0, 1
-      for _ in range(2, n + 1):
-          curr = prev2 + prev1
-          prev2 = prev1
-          prev1 = curr
-      return prev1
+* **Core Concept**: Accumulator variables and modulo arithmetic.
+* **C++ Solution Template (Iterative Fibonacci)**:
+  ```cpp
+  #include <iostream>
+
+  using namespace std;
+
+  long long getFibonacci(int n) {
+      if (n <= 0) return 0;
+      if (n == 1) return 1;
+      long long prev2 = 0, prev1 = 1;
+      for (int i = 2; i <= n; i++) {
+          long long curr = (prev2 + prev1) % 1000000007; // Modulo arithmetic to prevent overflow
+          prev2 = prev1;
+          prev1 = curr;
+      }
+      return prev1;
+  }
   ```
-* **Edge Cases**: $N=0$, negative inputs.
-* **TCS NQT Trap**: Using recursion. Large values of $N$ cause recursion depth crashes. Use iteration.
-* **PYQ-style Problems**:
-  1. **Fibonacci Modulo**: Find $N$-th Fibonacci term modulo $10^9+7$.  
-     *Sol*: Apply modulo operation inside the iterative loop at each step.
-  2. **Trailing Zeros in Factorial**: Count zeros at the end of $N!$.  
-     *Sol*: Count factors of 5 by dividing $N$ successively.
+* **Edge Cases**: $N = 0$, negative inputs.
+* **TCS NQT Trap**: Using recursion. Large values of $N$ cause stack overflows and TLE. Use iteration.
 
 ---
 
 ## 📋 PART B: Actual TCS NQT PYQ-Matching Problems
 
 ### Problem 1: The Ritual of Circular Kriya (Nov 2024 Shift 1 Q1)
-* **Problem Description**: An array of integers represents values in a circle. You must select elements such that no two adjacent elements are chosen. Maximize the sum.
-* **Mathematical Insight**: Because the array is circular, selecting the first element prevents selecting the last. Thus, the problem splits into two linear arrays:
-  1. Exclude the first element, solve for remaining linear array.
-  2. Exclude the last element, solve for remaining linear array.
-  Find the maximum of these two results.
-* **Python Solution**:
-  ```python
-  import sys
+* **Problem Statement**: An array of integers represents values in a circle. You must select elements such that no two adjacent elements are chosen. Maximize the sum.
+* **C++ Solution**:
+  ```cpp
+  #include <iostream>
+  #include <vector>
+  #include <algorithm>
 
-  def solve_linear(arr):
-      prev2, prev1 = 0, 0
-      for x in arr:
-          temp = max(prev1, prev2 + x)
-          prev2 = prev1
-          prev1 = temp
-      return prev1
+  using namespace std;
 
-  def solve_circular(arr):
-      n = len(arr)
-      if n == 0:
-          return 0
-      if n == 1:
-          return arr[0]
-      return max(solve_linear(arr[:-1]), solve_linear(arr[1:]))
+  long long solveLinear(vector<int>& arr, int start, int end) {
+      long long prev2 = 0, prev1 = 0;
+      for (int i = start; i <= end; i++) {
+          long long temp = max(prev1, prev2 + arr[i]);
+          prev2 = prev1;
+          prev1 = temp;
+      }
+      return prev1;
+  }
 
-  def main():
-      try:
-          input_data = sys.stdin.read().split()
-          if not input_data:
-              return
-          n = int(input_data[0])
-          arr = [int(x) for x in input_data[1:n+1]]
-          print(solve_circular(arr))
-      except Exception as e:
-          print(0)
-
-  if __name__ == "__main__":
-      main()
+  int main() {
+      int n;
+      if (!(cin >> n)) return 0;
+      vector<int> arr(n);
+      for (int i = 0; i < n; i++) {
+          cin >> arr[i];
+      }
+      
+      if (n == 0) {
+          cout << 0 << endl;
+      } else if (n == 1) {
+          cout << arr[0] << endl;
+      } else {
+          long long ans = max(solveLinear(arr, 0, n - 2), solveLinear(arr, 1, n - 1));
+          cout << ans << endl;
+      }
+      return 0;
+  }
   ```
-* **Verification Cases**:
-  * Input: `5 4 1 2 3 5` $\to$ Output: `8` (Select 5, 3 $\to$ sum 8. Wait, if input is `4 1 2 3` $\to$ output `4`?) Let's trace `10 4` $\to$ Output `120`.
 
 ---
 
 ### Problem 2: Longest Palindromic Substring (Nov 2024 Shift 2 Q1)
-* **Problem Description**: Find the longest contiguous substring that reads the same forward and backward.
-* **Insight**: Expand Around Center approach runs in $O(N^2)$ time and $O(1)$ space. Brute force $O(N^3)$ checking all substrings will time out.
-* **Python Solution**:
-  ```python
-  import sys
+* **Problem Statement**: Find the longest contiguous substring that reads the same forward and backward.
+* **C++ Solution**:
+  ```cpp
+  #include <iostream>
+  #include <string>
+  #include <algorithm>
 
-  def expand(s, left, right):
-      while left >= 0 and right < len(s) and s[left] == s[right]:
-          left -= 1
-          right += 1
-      return s[left + 1 : right]
+  using namespace std;
 
-  def longest_palindrome(s):
-      if not s:
-          return ""
-      longest = ""
-      for i in range(len(s)):
-          # Odd length palindromes
-          p1 = expand(s, i, i)
-          if len(p1) > len(longest):
-              longest = p1
-          # Even length palindromes
-          p2 = expand(s, i, i + 1)
-          if len(p2) > len(longest):
-              longest = p2
-      return longest
+  string expandAroundCenter(string s, int left, int right) {
+      while (left >= 0 && right < s.length() && s[left] == s[right]) {
+          left--;
+          right++;
+      }
+      return s.substr(left + 1, right - left - 1);
+  }
 
-  def main():
-      s = sys.stdin.read().strip()
-      if s:
-          print(longest_palindrome(s))
-
-  if __name__ == "__main__":
-      main()
+  int main() {
+      string s;
+      if (!(cin >> s)) return 0;
+      
+      if (s.empty()) {
+          cout << "" << endl;
+          return 0;
+      }
+      
+      string longest = "";
+      for (int i = 0; i < s.length(); i++) {
+          // Odd length palindromes
+          string p1 = expandAroundCenter(s, i, i);
+          if (p1.length() > longest.length()) {
+              longest = p1;
+          }
+          // Even length palindromes
+          string p2 = expandAroundCenter(s, i, i + 1);
+          if (p2.length() > longest.length()) {
+              longest = p2;
+          }
+      }
+      cout << longest << endl;
+      return 0;
+  }
   ```
-* **Verification Cases**:
-  * Input: `babad` $\to$ Output: `bab` (or `aba`).
-  * Input: `forgeeksskeegfor` $\to$ Output: `geeksskeeg`.
 
 ---
 
 ### Problem 3: Decrypting King's Secret Message (Nov 2024 Shift 1 Q2)
-* **Problem Description**: A string is encrypted using a substitution cipher. You are given the encrypted string and a list of integers representing shift values. Decrypt the message.
-* **Python Solution**:
-  ```python
-  import sys
+* **Problem Statement**: A string is encrypted using a substitution cipher. You are given the encrypted string and a list of integers representing shift values. Decrypt the message.
+* **C++ Solution**:
+  ```cpp
+  #include <iostream>
+  #include <string>
+  #include <vector>
 
-  def decrypt(s, shifts):
-      result = []
-      for i, char in enumerate(s):
-          if char.isalpha():
-              shift = shifts[i % len(shifts)]
-              base = ord('A') if char.isupper() else ord('a')
-              decrypted_char = chr((ord(char) - base - shift) % 26 + base)
-              result.append(decrypted_char)
-          else:
-              result.append(char)
-      return "".join(result)
+  using namespace std;
 
-  def main():
-      input_data = sys.stdin.read().splitlines()
-      if len(input_data) < 2:
-          return
-      s = input_data[0]
-      shifts = [int(x) for x in input_data[1].split()]
-      print(decrypt(s, shifts))
-
-  if __name__ == "__main__":
-      main()
+  int main() {
+      string s;
+      if (!(cin >> s)) return 0;
+      
+      int num;
+      vector<int> shifts;
+      while (cin >> num) {
+          shifts.push_back(num);
+      }
+      
+      if (shifts.empty()) {
+          cout << s << endl;
+          return 0;
+      }
+      
+      string decrypted = "";
+      for (int i = 0; i < s.length(); i++) {
+          char char_val = s[i];
+          if (isalpha(char_val)) {
+              int shift = shifts[i % shifts.size()];
+              char base = isupper(char_val) ? 'A' : 'a';
+              // Perform backward shift and wrap around modulo 26
+              int decrypted_char_val = (char_val - base - shift) % 26;
+              if (decrypted_char_val < 0) {
+                  decrypted_char_val += 26;
+              }
+              decrypted += (base + decrypted_char_val);
+          } else {
+              decrypted += char_val;
+          }
+      }
+      cout << decrypted << endl;
+      return 0;
+  }
   ```
-* **Verification Cases**:
-  * Input: `AYBTHC` and `28 25 31 31 35` $\to$ Output: `HEKKO`. (Wait, let's verify key offsets).
 
 ---
 
@@ -278,142 +327,181 @@
 
 ### 1. Predicted: Modified Fibonacci with Condition
 * **Problem Statement**: Generate Fibonacci numbers up to $N$ and print only those that are even and divisible by 3.
-* **Python Solution**:
-  ```python
-  def modified_fib(n):
-      if n <= 0:
-          return []
-      res = []
-      prev2, prev1 = 0, 1
-      while prev2 <= n:
-          if prev2 % 2 == 0 and prev2 % 3 == 0 and prev2 != 0:
-              res.append(prev2)
-          curr = prev2 + prev1
-          prev2 = prev1
-          prev1 = curr
-      return res
+* **C++ Solution**:
+  ```cpp
+  #include <iostream>
+  #include <vector>
+
+  using namespace std;
+
+  int main() {
+      long long n;
+      if (!(cin >> n)) return 0;
+      
+      long long prev2 = 0, prev1 = 1;
+      bool first = true;
+      while (prev2 <= n) {
+          if (prev2 % 2 == 0 && prev2 % 3 == 0 && prev2 != 0) {
+              if (!first) cout << " ";
+              cout << prev2;
+              first = false;
+          }
+          long long curr = prev2 + prev1;
+          prev2 = prev1;
+          prev1 = curr;
+      }
+      cout << endl;
+      return 0;
+  }
   ```
-* **Edge Cases**: $N \le 0$, small constraints.
 
 ---
 
-### 2. Predicted: String Encoding with K Positions
+### 2. Predicted: String Consonant Encoding
 * **Problem Statement**: Shift all consonants in a string forward by $K$ positions, while vowels remain unchanged.
-* **Python Solution**:
-  ```python
-  def encode_consonants(s, k):
-      vowels = set("aeiouAEIOU")
-      result = []
-      for char in s:
-          if char.isalpha() and char not in vowels:
-              base = ord('A') if char.isupper() else ord('a')
-              # Find new position skipping vowels? Or simple shift:
-              # Simple shift is:
-              new_char = chr((ord(char) - base + k) % 26 + base)
-              result.append(new_char)
-          else:
-              result.append(char)
-      return "".join(result)
+* **C++ Solution**:
+  ```cpp
+  #include <iostream>
+  #include <string>
+  #include <unordered_set>
+
+  using namespace std;
+
+  bool isVowel(char c) {
+      char lower = tolower(c);
+      return (lower == 'a' || lower == 'e' || lower == 'i' || lower == 'o' || lower == 'u');
+  }
+
+  int main() {
+      string s;
+      int k;
+      if (!(cin >> s >> k)) return 0;
+      
+      for (int i = 0; i < s.length(); i++) {
+          char c = s[i];
+          if (isalpha(c) && !isVowel(c)) {
+              char base = isupper(c) ? 'A' : 'a';
+              s[i] = (c - base + k) % 26 + base;
+          }
+      }
+      cout << s << endl;
+      return 0;
+  }
   ```
 
 ---
 
 ### 3. Predicted: Circular Array K Rotations Element Lookup
 * **Problem Statement**: Given an array, rotate it right by $K$ positions and return the element at a specific index $I$.
-* **Python Solution**:
-  ```python
-  def get_element_after_rotation(arr, k, target_idx):
-      n = len(arr)
-      if n == 0:
-          return -1
-      effective_rotation = k % n
-      # The element originally at index x moves to (x + effective_rotation) % n
-      # To find what is at target_idx now, look at (target_idx - effective_rotation) % n
-      original_idx = (target_idx - effective_rotation) % n
-      return arr[original_idx]
+* **C++ Solution**:
+  ```cpp
+  #include <iostream>
+  #include <vector>
+
+  using namespace std;
+
+  int main() {
+      int n, k, target_idx;
+      if (!(cin >> n >> k >> target_idx)) return 0;
+      vector<int> arr(n);
+      for (int i = 0; i < n; i++) {
+          cin >> arr[i];
+      }
+      
+      int effective_rotation = k % n;
+      int original_idx = (target_idx - effective_rotation + n) % n;
+      cout << arr[original_idx] << endl;
+      return 0;
+  }
   ```
 
 ---
 
 ### 4. Predicted: Digit Product Sum Equality
 * **Problem Statement**: Find all numbers between $A$ and $B$ (inclusive) where the sum of digits is equal to the product of digits.
-* **Python Solution**:
-  ```python
-  def digit_sum_product_equal(a, b):
-      result = []
-      for num in range(a, b + 1):
-          digits = [int(x) for x in str(num)]
-          digit_sum = sum(digits)
-          # Product
-          digit_prod = 1
-          for d in digits:
-              digit_prod *= d
-          if digit_sum == digit_prod:
-              result.append(num)
-      return result
+* **C++ Solution**:
+  ```cpp
+  #include <iostream>
+  #include <string>
+
+  using namespace std;
+
+  bool isSumProductEqual(int num) {
+      int sum = 0;
+      int prod = 1;
+      int temp = num;
+      while (temp > 0) {
+          int digit = temp % 10;
+          sum += digit;
+          prod *= digit;
+          temp /= 10;
+      }
+      return sum == prod;
+  }
+
+  int main() {
+      int a, b;
+      if (!(cin >> a >> b)) return 0;
+      bool first = true;
+      for (int i = a; i <= b; i++) {
+          if (isSumProductEqual(i)) {
+              if (!first) cout << " ";
+              cout << i;
+              first = false;
+          }
+      }
+      cout << endl;
+      return 0;
+  }
   ```
 
 ---
 
 ### 5. Predicted: Pattern Value Discovery
-* **Problem Statement**: Output the $N$-th value of the series: $1, 2, 6, 15, 31, 56, \dots$.
-* **Mathematical Insight**: First differences: $+1, +4, +9, +16, +25$. These are squares! $T_n = T_{n-1} + (n-1)^2$.
-  $$T_n = 1 + \sum_{i=1}^{n-1} i^2 = 1 + \frac{(n-1)n(2n-1)}{6}$$
-* **Python Solution**:
-  ```python
-  def get_nth_term(n):
-      if n <= 1:
-          return 1
-      return 1 + ((n - 1) * n * (2 * n - 1)) // 6
+* **Problem Statement**: Output the $N$-th value of the series: $1, 2, 6, 15, 31, 56, \dots$. (First differences are squares: $+1, +4, +9, \dots$).
+* **C++ Solution**:
+  ```cpp
+  #include <iostream>
+
+  using namespace std;
+
+  int main() {
+      long long n;
+      if (!(cin >> n)) return 0;
+      
+      if (n <= 1) {
+          cout << 1 << endl;
+      } else {
+          long long ans = 1 + ((n - 1) * n * (2 * n - 1)) / 6;
+          cout << ans << endl;
+      }
+      return 0;
+  }
   ```
 
 ---
 
-## 🧹 PART D: Coding Hygiene Checklist for TCS NQT
+## 🧹 PART D: Coding Hygiene Checklist for TCS NQT (C++ Specific)
 
-### 1. Input Reading Template
-To avoid input crashes, use `sys.stdin.read` to fetch all tokens at once.
-
-```python
-import sys
-
-def main():
-    input_data = sys.stdin.read().split()
-    if not input_data:
-        return
-    # Process tokens
-    n = int(input_data[0])
-    arr = [int(x) for x in input_data[1:n+1]]
-    
-    # Solve and print
+### 1. Fast I/O Setup
+Always write these lines at the beginning of your `main()` function to speed up console input-output operations.
+```cpp
+ios_base::sync_with_stdio(false);
+cin.tie(NULL);
 ```
 
-### 2. Multi-Test Cases Handling
-Always check if the input contains a test case count $T$ at the first line.
-
-```python
-import sys
-
-def solve():
-    # Solve single test case
-    pass
-
-def main():
-    input_data = sys.stdin.read().split()
-    if not input_data:
-        return
-    t = int(input_data[0])
-    # loop through t test cases
+### 2. Reading Inputs till EOF
+For problems where the size is not given first, read using a `while` loop:
+```cpp
+int val;
+vector<int> arr;
+while (cin >> val) {
+    arr.push_back(val);
+}
 ```
 
-### 3. Print Formatting
-Ensure no trailing whitespace or extra newlines are printed. Use `end=""` or `print(*(result))` to format arrays cleanly.
+### 3. Preventing Integer Overflow
+TCS NQT test cases contain values that exceed standard 32-bit limits ($2^{31}-1$). Always use `long long` instead of `int` for sums, factorials, and products.
 
-### 4. Clean Variable Naming
-Avoid single-letter variables for complex logical parameters. Use descriptive names like `left_pointer`, `digit_sum`, `visited_nodes`.
-
-### 5. Pre-Submit Checklist
-- Did you read input from standard input (no hard-coded arguments)?
-- Did you check for $N=1, N=0$ boundaries?
-- Did you test negative numbers and large bounds?
-- Did you click both `"Compile Code"` AND `"Save Code"`?
+### 4. Vector Safety
+Ensure you do not access indices like `arr[-1]` or `arr[size]`. Always wrap boundaries using `(idx + size) % size`.
