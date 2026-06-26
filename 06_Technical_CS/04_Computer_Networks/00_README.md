@@ -25,5 +25,3 @@ Depending on your exam schedule, prioritize your study using the following paths
 1. Study [01_Concept.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/01_Concept.md) and [02_Visualization.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/02_Visualization.md).
 2. Go through [06_Solved_Examples.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/06_Solved_Examples.md) (progressive levels).
 3. Review [05_Recognition.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/05_Recognition.md) and solve [08_PYQs.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/08_PYQs.md).
-4. Run through practice sets: [10_Practice_Beginner.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/10_Practice_Beginner.md), [11_Practice_Intermediate.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/11_Practice_Intermediate.md), and [12_Practice_Advanced.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/12_Practice_Advanced.md).
-5. Solve [13_Timed_Practice.md](file:///D:/Temp/TCS-NQT/06_Technical_CS/04_Computer_Networks/13_Timed_Practice.md) under a timed session.

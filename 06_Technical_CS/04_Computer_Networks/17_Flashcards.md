@@ -1,6 +1,6 @@
 # Computer Networks - Flashcards
 
 *   **Card 1: What is the main objective of studying Computer Networks?**
-    *   *Answer:* To understand the underlying logical structure and optimize mathematical parameters.
+    *   *Answer:* To optimize system parameters.
 *   **Card 2: What is the target time complexity for the optimal solution?**
     *   *Answer:* Usually linear time $O(N)$ and constant space $O(1)$.

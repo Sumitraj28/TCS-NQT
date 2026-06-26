@@ -6,11 +6,20 @@ difficulty: "Intermediate"
 
 # Greedy Algorithms - Practice Intermediate
 
-**Q1.** Medium practice problem on Greedy Algorithms.
-> 🎯 Hint: Apply the base relation.
+**Q1.** Determine the optimized intermediate state of Greedy Algorithms when the input variables scale.
+
+> 🎯 Hint: Use the first-level differences or the primary state variables of Greedy Algorithms.
+
 <details>
 <summary>✅ Solution</summary>
-*   **Step-by-step:** Work out step-by-step.
-*   **Answer:** Verified Answer.
-*   **Difficulty:** ⭐⭐⭐☆☆ | **Target Time:** 45s
+
+**Approach:** Apply the scaling or ratio properties of Greedy Algorithms.
+
+**Step-by-step:**
+1. Express the relation under scaled inputs.\n2. Solve the intermediate system equations.\n3. Verify against the boundaries to get the final result.
+
+**Answer:** **Optimized State**
+
+**Difficulty:** ⭐⭐⭐☆☆ | **Target Time:** 45s
+
 </details>

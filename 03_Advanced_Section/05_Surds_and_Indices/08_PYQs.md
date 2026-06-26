@@ -1,6 +1,6 @@
 # Surds & Indices - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Surds & Indices problem under NQT constraints.
 *   **Pattern ID:** 03__05_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

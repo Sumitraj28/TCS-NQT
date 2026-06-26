@@ -1,6 +1,6 @@
 # Object-Oriented Programming - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Object-Oriented Programming problem under NQT constraints.
 *   **Pattern ID:** 06__01_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

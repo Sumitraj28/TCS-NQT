@@ -1,6 +1,6 @@
 # Cloze Test & Recall - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Cloze Test & Recall problem under NQT constraints.
 *   **Pattern ID:** 04__07_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

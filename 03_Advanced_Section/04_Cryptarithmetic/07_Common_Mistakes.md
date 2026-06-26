@@ -1,5 +1,5 @@
 # Cryptarithmetic Puzzles - Common Mistakes & Traps
 
-### Mistake 1. Off-by-one boundary checks
-*   **Incorrect:** Failing to include the ending indices in loops or ranges.
-*   **Correct:** Always double-check if ranges are inclusive $[a, b]$ or exclusive $[a, b)$.
+### Mistake 1. Ignoring boundary conditions
+*   **Incorrect:** Assuming variables can take any values without checking domain constraints.
+*   **Correct:** Always check if variables must be positive integers, non-zero, or bounded.

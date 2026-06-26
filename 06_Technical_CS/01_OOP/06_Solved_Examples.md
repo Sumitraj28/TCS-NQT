@@ -2,16 +2,11 @@
 
 ## 🟢 Easy-Level Examples
 ### Example 1
-*   **Question:** What is the simplest form of the given Object-Oriented Programming relation?
-*   **Solution:** Reduce the parameters linearly and evaluate.
-*   **Verification:** Substitute small numbers to cross-check.
+*   **Question:** Find the base parameter of the given Object-Oriented Programming relation.
+*   **Solution:** Apply the base relation directly.
+*   **Verification:** Double-check calculations by working backwards.
 
 ## 🟡 Medium-Level Examples
 ### Example 2
-*   **Question:** Find the optimal configuration when constraints are doubled.
-*   **Solution:** Apply the base formula and scale appropriately.
-
-## 🔴 Hard-Level Examples
-### Example 3
-*   **Question:** Maximize output under boundary conditions.
-*   **Solution:** Set up the boundary equations and solve for extreme values.
+*   **Question:** Optimize the system when parameters scale by a factor of 2.
+*   **Solution:** Write the scaled equation and solve for the unknown variable.

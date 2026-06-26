@@ -6,6 +6,5 @@ Evaluate your speed under pressure.
 > 🎯 Hint: Use shortcuts.
 <details>
 <summary>✅ Solution</summary>
-*   **Step-by-step:** Quick calculation.
-*   **Answer:** Correct choice.
+*   **Step-by-step:** Quick calculation.\n*   **Answer:** Correct choice.
 </details>

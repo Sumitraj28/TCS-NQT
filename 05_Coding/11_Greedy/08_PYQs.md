@@ -1,6 +1,6 @@
 # Greedy Algorithms - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Greedy Algorithms problem under NQT constraints.
 *   **Pattern ID:** 05__11_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

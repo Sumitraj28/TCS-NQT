@@ -1,6 +1,6 @@
 # Directions & Distance - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Directions & Distance problem under NQT constraints.
 *   **Pattern ID:** 02__05_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

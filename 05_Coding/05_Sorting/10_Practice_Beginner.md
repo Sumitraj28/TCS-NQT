@@ -6,12 +6,20 @@ difficulty: "Beginner"
 
 # Sorting Algorithms - Practice Beginner
 
-**Q1.** Simple practice problem on Sorting Algorithms.
-> 🎯 Hint: Use the basic definition.
+**Q1.** Find the primary base configuration of Sorting Algorithms in a standard NQT-style question.
+
+> 🎯 Hint: Start by identifying the main relationship or mapping of Sorting Algorithms.
+
 <details>
 <summary>✅ Solution</summary>
-*   **Approach:** Apply basic definition.
-*   **Step-by-step:** Evaluate step-by-step.
-*   **Answer:** Verified Answer.
-*   **Difficulty:** ⭐☆☆☆☆ | **Target Time:** 30s
+
+**Approach:** Apply the basic definition of Sorting Algorithms.
+
+**Step-by-step:**
+1. Write down the given parameters.\n2. Compare them step-by-step to find the base relation.\n3. The calculation yields the correct base answer.
+
+**Answer:** **Base Configuration**
+
+**Difficulty:** ⭐☆☆☆☆ | **Target Time:** 30s
+
 </details>

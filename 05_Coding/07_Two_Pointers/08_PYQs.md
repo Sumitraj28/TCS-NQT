@@ -1,6 +1,6 @@
 # Two Pointers Technique - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Two Pointers Technique problem under NQT constraints.
 *   **Pattern ID:** 05__07_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

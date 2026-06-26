@@ -1,6 +1,6 @@
 # Hashing Techniques - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Hashing Techniques problem under NQT constraints.
 *   **Pattern ID:** 05__04_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

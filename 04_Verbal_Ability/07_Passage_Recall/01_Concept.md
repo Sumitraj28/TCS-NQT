@@ -1,21 +1,16 @@
 # Cloze Test & Recall - Concept Guide
 
-## 1. Introduction
-This guide covers the core principles of Cloze Test & Recall to build a foundational understanding.
+## 1. Core Principles of Cloze Test & Recall
+This guide provides the foundational theory and mental models needed to master Cloze Test & Recall for the TCS NQT exam.
 
-### Why TCS asks this?
-TCS NQT tests Cloze Test & Recall to evaluate logical reasoning, analytical skills, and coding readiness necessary for the 9 LPA Prime category roles.
+### Real-World Analogy:
+Every system is governed by relationships. Just like variables in a software system depend on inputs to produce outputs, Cloze Test & Recall questions require you to understand how change propagates.
 
-### ASCII Mind Map:
 ```
-                      Core Cloze Test & Recall Structure
-                                |
-             +------------------+------------------+
-             |                                     |
-       Primary Rule 1                        Primary Rule 2
-     (Detailed concept)                     (Case analysis)
+Input -> [ Cloze Test & Recall Mechanism ] -> Output
 ```
 
-## 2. Theoretical Breakdown
-*   **Principle A:** Every abstraction should have a concrete representation.
-*   **Principle B:** Optimization must balance time and space complexities.
+## 2. Core Mechanics
+*   **Rule A:** Understand constraints before beginning any calculation.
+*   **Rule B:** Always map out variables systematically in a table or list.
+*   **Rule C:** Look for base conditions to break complex problems into simple parts.

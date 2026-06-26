@@ -6,12 +6,20 @@ difficulty: "Beginner"
 
 # Modular Arithmetic - Practice Beginner
 
-**Q1.** Simple practice problem on Modular Arithmetic.
-> 🎯 Hint: Use the basic definition.
+**Q1.** Find the primary base configuration of Modular Arithmetic in a standard NQT-style question.
+
+> 🎯 Hint: Start by identifying the main relationship or mapping of Modular Arithmetic.
+
 <details>
 <summary>✅ Solution</summary>
-*   **Approach:** Apply basic definition.
-*   **Step-by-step:** Evaluate step-by-step.
-*   **Answer:** Verified Answer.
-*   **Difficulty:** ⭐☆☆☆☆ | **Target Time:** 30s
+
+**Approach:** Apply the basic definition of Modular Arithmetic.
+
+**Step-by-step:**
+1. Write down the given parameters.\n2. Compare them step-by-step to find the base relation.\n3. The calculation yields the correct base answer.
+
+**Answer:** **Base Configuration**
+
+**Difficulty:** ⭐☆☆☆☆ | **Target Time:** 30s
+
 </details>

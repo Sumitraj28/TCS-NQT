@@ -1,6 +1,6 @@
 # Mathematical Coding - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Mathematical Coding problem under NQT constraints.
 *   **Pattern ID:** 05__12_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

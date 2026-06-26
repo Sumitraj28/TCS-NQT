@@ -1,5 +1,5 @@
 # Hashing Techniques - Expected Questions
 
 ### Expected Question 1
-*   **Question:** Predict the next state in the sequence of Hashing Techniques.
-*   **Solution:** Use the transition relation $S_{t+1} = f(S_t)$ to find the answer.
+*   **Question:** Find the output value under the new NQT pattern constraints.
+*   **Solution:** Set up the system equations and solve.

@@ -1,6 +1,6 @@
 # AP & GP Series - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard AP & GP Series problem under NQT constraints.
 *   **Pattern ID:** 03__01_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

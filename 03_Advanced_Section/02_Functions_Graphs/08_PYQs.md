@@ -1,6 +1,6 @@
 # Functions & Graphs - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Functions & Graphs problem under NQT constraints.
 *   **Pattern ID:** 03__02_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

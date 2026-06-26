@@ -1,21 +1,16 @@
 # English Grammar Rules - Concept Guide
 
-## 1. Introduction
-This guide covers the core principles of English Grammar Rules to build a foundational understanding.
+## 1. Core Principles of English Grammar Rules
+This guide provides the foundational theory and mental models needed to master English Grammar Rules for the TCS NQT exam.
 
-### Why TCS asks this?
-TCS NQT tests English Grammar Rules to evaluate logical reasoning, analytical skills, and coding readiness necessary for the 9 LPA Prime category roles.
+### Real-World Analogy:
+Every system is governed by relationships. Just like variables in a software system depend on inputs to produce outputs, English Grammar Rules questions require you to understand how change propagates.
 
-### ASCII Mind Map:
 ```
-                      Core English Grammar Rules Structure
-                                |
-             +------------------+------------------+
-             |                                     |
-       Primary Rule 1                        Primary Rule 2
-     (Detailed concept)                     (Case analysis)
+Input -> [ English Grammar Rules Mechanism ] -> Output
 ```
 
-## 2. Theoretical Breakdown
-*   **Principle A:** Every abstraction should have a concrete representation.
-*   **Principle B:** Optimization must balance time and space complexities.
+## 2. Core Mechanics
+*   **Rule A:** Understand constraints before beginning any calculation.
+*   **Rule B:** Always map out variables systematically in a table or list.
+*   **Rule C:** Look for base conditions to break complex problems into simple parts.

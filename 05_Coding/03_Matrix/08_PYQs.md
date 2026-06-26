@@ -1,6 +1,6 @@
 # Matrix Operations - Past Year Questions (PYQs)
 
-### PYQ 1. Authentic TCS NQT Pattern
+### PYQ 1
 *   **Question:** Solve the standard Matrix Operations problem under NQT constraints.
 *   **Pattern ID:** 05__03_PYQ
 *   **Approach:** Apply the combined rule to isolate variables.

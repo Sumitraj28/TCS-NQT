@@ -1,21 +1,21 @@
 # Mathematical Coding - Visual Guide & Models
 
-Use this visual guide to map out the structures of Mathematical Coding.
+Use this visual guide to map out solutions for Mathematical Coding.
 
 ### Decision Tree:
 ```
-                     Identify Mathematical Coding Pattern
-                                |
-           +--------------------+--------------------+
-           |                                         |
-     Condition X?                              Condition Y?
-           |                                         |
-     Select Method A                           Select Method B
+                      Analyze Mathematical Coding Question
+                                 |
+           +---------------------+---------------------+
+           |                                           |
+      Condition A?                                Condition B?
+           |                                           |
+     Apply Method 1                              Apply Method 2
 ```
 
 ### Comparison Table:
-| Aspect | Method A | Method B |
+| Parameter | Method 1 | Method 2 |
 | :--- | :--- | :--- |
-| **Time Complexity** | $O(N)$ | $O(\log N)$ |
-| **Space Complexity** | $O(N)$ | $O(1)$ |
-| **Best Scenario** | Unsorted inputs | Sorted inputs |
+| **Logic Type** | Linear/Simple | Multi-stage/Complex |
+| **Pacing** | Fast (<30s) | Moderate (~60s) |
+| **Accuracy** | High | Subject to boundary checks |

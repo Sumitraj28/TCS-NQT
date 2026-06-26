@@ -1,21 +1,21 @@
 # Sentence Completion - Visual Guide & Models
 
-Use this visual guide to map out the structures of Sentence Completion.
+Use this visual guide to map out solutions for Sentence Completion.
 
 ### Decision Tree:
 ```
-                     Identify Sentence Completion Pattern
-                                |
-           +--------------------+--------------------+
-           |                                         |
-     Condition X?                              Condition Y?
-           |                                         |
-     Select Method A                           Select Method B
+                      Analyze Sentence Completion Question
+                                 |
+           +---------------------+---------------------+
+           |                                           |
+      Condition A?                                Condition B?
+           |                                           |
+     Apply Method 1                              Apply Method 2
 ```
 
 ### Comparison Table:
-| Aspect | Method A | Method B |
+| Parameter | Method 1 | Method 2 |
 | :--- | :--- | :--- |
-| **Time Complexity** | $O(N)$ | $O(\log N)$ |
-| **Space Complexity** | $O(N)$ | $O(1)$ |
-| **Best Scenario** | Unsorted inputs | Sorted inputs |
+| **Logic Type** | Linear/Simple | Multi-stage/Complex |
+| **Pacing** | Fast (<30s) | Moderate (~60s) |
+| **Accuracy** | High | Subject to boundary checks |

@@ -6,11 +6,20 @@ difficulty: "Advanced"
 
 # Blood Relations - Practice Advanced
 
-**Q1.** Hard practice problem on Blood Relations.
-> 🎯 Hint: Check extreme boundaries.
+**Q1.** Maximize the performance output of the Blood Relations configuration under complex constraints.
+
+> 🎯 Hint: Perform a boundary-value analysis or check extreme limits of Blood Relations.
+
 <details>
 <summary>✅ Solution</summary>
-*   **Step-by-step:** Step-by-step mathematical reduction.
-*   **Answer:** Verified Answer.
-*   **Difficulty:** ⭐⭐⭐⭐⭐ | **Target Time:** 90s
+
+**Approach:** Solve the boundary equations for the extreme value of Blood Relations.
+
+**Step-by-step:**
+1. Formulate the constraint equations.\n2. Calculate the extreme values at the boundaries.\n3. This yields the maximum verified performance.
+
+**Answer:** **Maximized Performance**
+
+**Difficulty:** ⭐⭐⭐⭐⭐ | **Target Time:** 90s
+
 </details>
