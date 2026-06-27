@@ -34,6 +34,14 @@ The word "precipitated" as used in the first sentence most nearly means:
 *   D. Simplified
 *   **Answer: C.** In the context of IoT sensors causing a massive influx of data, "precipitated" means triggered or brought about.
 
+### Q4 (Detail-based)
+Which of the following is cited as a potential drawback of edge computing?
+*   A. An increase in network latency delays.
+*   B. The need to transmit terabytes of raw video footage.
+*   C. Increased vulnerability to malicious cyberattacks via physical nodes.
+*   D. Incompatibility with modern traffic lights.
+*   **Answer: C.** The final sentence states that critics point to "security vulnerabilities of distributing sensitive data across thousands of physical nodes, making local networks potential entry points for malicious cyberattacks."
+
 ---
 
 ## Passage 2 — Remote Work & Social Capital
@@ -44,7 +52,7 @@ In contrast, the digital workspace is highly structured and transactional. Virtu
 
 ---
 
-### Q4 (Main Idea)
+### Q5 (Main Idea)
 Which of the following best expresses the main idea of the passage?
 *   A. Remote work has significantly diminished individual task efficiency.
 *   B. Traditional offices were inefficient due to excessive socializing.
@@ -52,7 +60,7 @@ Which of the following best expresses the main idea of the passage?
 *   D. While remote work maintains productivity, it weakens the informal relationships and cohesion of a firm.
 *   **Answer: D.** The passage discusses how productivity remains stable but social capital and long-term cohesion are strained.
 
-### Q5 (Inference)
+### Q6 (Inference)
 The author implies that junior employees learn in traditional offices partly through:
 *   A. formal classroom instruction.
 *   B. passive observation of senior staff.
@@ -60,13 +68,21 @@ The author implies that junior employees learn in traditional offices partly thr
 *   D. scheduled review sessions.
 *   **Answer: B.** The passage notes that junior staff suffer because they miss the "benefit of observing senior colleagues... in real time."
 
-### Q6 (Vocabulary-in-Context)
+### Q7 (Vocabulary-in-Context)
 The word "disparate" as used in the first paragraph is closest in meaning to:
 *   A. Hostile
 *   B. Divided
 *   C. Diverse
 *   D. Overworked
 *   **Answer: C.** "Disparate teams" refers to different or diverse teams across departments.
+
+### Q8 (Detail-based)
+According to the passage, how does the digital workspace differ from the traditional office?
+*   A. It operates with fewer client meetings.
+*   B. It is highly structured and transactional rather than spontaneous.
+*   C. It reduces individual productivity levels.
+*   D. It mandates longer working hours.
+*   **Answer: B.** The text explicitly contrasts the spontaneous office water cooler chats with the digital workspace which is "highly structured and transactional."
 
 ---
 
@@ -78,7 +94,7 @@ In these abyssal depths, volcanic activity heats seawater and infuses it with mi
 
 ---
 
-### Q7 (Main Idea)
+### Q9 (Main Idea)
 What is the main topic of the passage?
 *   A. The process of photosynthesis in deep waters.
 *   B. Chemosynthetic ecosystems at deep-sea vents and their scientific implications.
@@ -86,7 +102,7 @@ What is the main topic of the passage?
 *   D. The history of marine biology textbooks.
 *   **Answer: B.** The passage explains the discovery of deep-sea hydrothermal vents, how they use chemosynthesis, and their value as models for astrobiology.
 
-### Q8 (Inference)
+### Q10 (Inference)
 It can be inferred from the passage that prior to 1977, scientists believed that:
 *   A. volcanic activity could not occur on the ocean floor.
 *   B. bacteria could not survive in cold water.
@@ -94,13 +110,21 @@ It can be inferred from the passage that prior to 1977, scientists believed that
 *   D. deep-sea tube worms were closely related to garden worms.
 *   **Answer: C.** The text states that before 1977, the paradigm was that "all life on Earth was fundamentally dependent on solar energy."
 
-### Q9 (Vocabulary-in-Context)
+### Q11 (Vocabulary-in-Context)
 The word "abyssal" as used in the second paragraph most nearly means:
 *   A. Freezing
 *   B. Extremely deep
 *   C. Toxic
 *   D. Unexplored
 *   **Answer: B.** Abyssal depths refer to the extremely deep, bottom layers of the ocean.
+
+### Q12 (Detail-based)
+Which chemical compound is converted by bacteria into organic energy around hydrothermal vents?
+*   A. Carbon dioxide
+*   B. Hydrogen sulfide
+*   C. Sodium chloride
+*   D. Magnesium oxide
+*   **Answer: B.** The text states that bacteria use "chemosynthesis, converting these toxic chemical compounds [minerals and hydrogen sulfide] into organic energy."
 
 ---
 
@@ -112,7 +136,7 @@ This peer-to-peer architecture promises greater financial inclusivity, lower tra
 
 ---
 
-### Q10 (Main Idea)
+### Q13 (Main Idea)
 What is the primary theme of the passage?
 *   A. The history of traditional commercial banking.
 *   B. The technical execution of smart contract code.
@@ -120,7 +144,7 @@ What is the primary theme of the passage?
 *   D. The mechanisms of preventing cryptocurrency fraud.
 *   **Answer: C.** The passage outlines both the promises (inclusivity, low fees) and the risks (hacks, lack of regulation) of DeFi.
 
-### Q11 (Inference)
+### Q14 (Inference)
 Why is the risk of financial loss greater for DeFi users compared to traditional bank customers?
 *   A. DeFi transactions take days to settle.
 *   B. DeFi lacks government-backed regulatory protections and insurance recourse.
@@ -128,13 +152,21 @@ Why is the risk of financial loss greater for DeFi users compared to traditional
 *   D. Smart contracts cannot be read by humans.
 *   **Answer: B.** The passage states that because DeFi operates outside regulatory frameworks, "consumers have no recourse" during hacks or exploits.
 
-### Q12 (Vocabulary-in-Context)
+### Q15 (Vocabulary-in-Context)
 The word "intermediary" as used in the first sentence is closest in meaning to:
 *   A. Regulatory
 *   B. Mid-level
 *   C. Middleman
 *   D. Technological
 *   **Answer: C.** Intermediaries in finance are middlemen (like banks) that stand between the two transacting parties.
+
+### Q16 (Detail-based)
+What technology is used by DeFi platforms to automate financial transactions?
+*   A. Central bank digital systems
+*   B. Paper-based ledger registries
+*   C. Smart contracts executed via blockchain
+*   D. Manual clearinghouse sweeps
+*   **Answer: C.** The text outlines that DeFi platforms utilize "smart contracts"—automated self-executing agreements written in code—powered by blockchain.
 
 ---
 
@@ -146,7 +178,7 @@ A prime example is the design of ventilation systems inspired by termite mounds.
 
 ---
 
-### Q13 (Main Idea)
+### Q17 (Main Idea)
 Which of the following is the most suitable title for this passage?
 *   A. Termite Mounds of Zimbabwe
 *   B. Conquering the Environment with Modern Concrete
@@ -154,7 +186,7 @@ Which of the following is the most suitable title for this passage?
 *   D. Biomimicry: Designing Infrastructure Inspired by Nature
 *   **Answer: D.** The passage introduces biomimicry and discusses civil engineering applications inspired by termites and bacteria.
 
-### Q14 (Inference)
+### Q18 (Inference)
 Based on the passage, what is a key difference between traditional engineering and biomimetic engineering?
 *   A. Traditional engineering is cheaper to implement.
 *   B. Biomimetic engineering uses living organisms to build structural walls.
@@ -162,10 +194,18 @@ Based on the passage, what is a key difference between traditional engineering a
 *   D. Traditional engineering relies entirely on solar energy.
 *   **Answer: C.** The passage contrasts "fighting natural forces with rigid materials" with "flexible, adaptive systems" emulating biological evolution.
 
-### Q15 (Vocabulary-in-Context)
+### Q19 (Vocabulary-in-Context)
 The word "emulate" as used in the first paragraph most nearly means:
 *   A. Modify
 *   B. Study
 *   C. Imitate
 *   D. Simplify
 *   **Answer: C.** To emulate designs from nature means to imitate or copy them.
+
+### Q20 (Detail-based)
+How does the Eastgate Centre office complex in Zimbabwe maintain its temperature?
+*   A. By utilizing high-powered solar cooling panels.
+*   B. By copying the passive cooling ventilation chimneys of termite mounds.
+*   C. By burying the entire building foundation deep underground.
+*   D. By lining its facade with self-healing limestone blocks.
+*   **Answer: B.** The passage explains that the Eastgate Centre "regulates its interior temperature... by mimicking the passive cooling chimneys found in termite nests."
