@@ -39,7 +39,25 @@ int countPairsWithSum(const std::vector<int>& arr, int target) {
 Input: `arr = [1, 2, 1, 3, 4, 2]`, `k = 2`  
 Output: `[1, 2]`
 
-**C++ Solution:** Build frequency map, filter keys with value = k.
+**C++ Solution:**
+```cpp
+#include <vector>
+#include <unordered_map>
+
+std::vector<int> findFreqK(const std::vector<int>& arr, int k) {
+    std::unordered_map<int, int> freq;
+    for (int num : arr) freq[num]++;
+    
+    std::vector<int> result;
+    for (const auto& pair : freq) {
+        if (pair.second == k) {
+            result.push_back(pair.first);
+        }
+    }
+    return result;
+}
+```
+**Complexity:** Time O(N) | Space O(N)
 
 ---
 
@@ -51,7 +69,26 @@ Output: `[1, 2]`
 Input: `A = [5, 4, 9, 2]`, `B = [5, 1, 9, 3]`  
 Output: 10 (4 + 2 + 1 + 3)
 
-**C++ Solution:** Build sets, sum elements present in one set but not the other.
+**C++ Solution:**
+```cpp
+#include <vector>
+#include <unordered_set>
+
+int nonOverlappingSum(const std::vector<int>& A, const std::vector<int>& B) {
+    std::unordered_set<int> setA(A.begin(), A.end());
+    std::unordered_set<int> setB(B.begin(), B.end());
+    
+    int sum = 0;
+    for (int num : A) {
+        if (!setB.count(num)) sum += num;
+    }
+    for (int num : B) {
+        if (!setA.count(num)) sum += num;
+    }
+    return sum;
+}
+```
+**Complexity:** Time O(N + M) | Space O(N + M)
 
 ---
 
@@ -61,8 +98,28 @@ Output: 10 (4 + 2 + 1 + 3)
 **Problem:** Count total contiguous subarrays whose sum equals 0.
 
 Input: `arr = [1, -1, 2, -2]`  
-Output: 4 (subarrays `[1,-1]`, `[2,-2]`, `[1,-1,2,-2]`, `[-1,2,-2]` ? Wait: 1-1=0, 2-2=0, 1-1+2-2=0, wait: index 1 to 3 is -1+2-2=-1 not 0.
-Correct: `[1,-1]`, `[2,-2]`, `[1,-1,2,-2]`. Total = 3 subarrays.
+Output: 3 (subarrays `[1,-1]`, `[2,-2]`, `[1,-1,2,-2]`)
+
+**C++ Solution:**
+```cpp
+#include <vector>
+#include <unordered_map>
+
+int countSubarraysWithSumZero(const std::vector<int>& arr) {
+    std::unordered_map<int, int> prefix;
+    prefix[0] = 1;
+    int sum = 0, count = 0;
+    for (int num : arr) {
+        sum += num;
+        if (prefix.count(sum)) {
+            count += prefix[sum];
+        }
+        prefix[sum]++;
+    }
+    return count;
+}
+```
+**Complexity:** Time O(N) | Space O(N)
 
 ---
 

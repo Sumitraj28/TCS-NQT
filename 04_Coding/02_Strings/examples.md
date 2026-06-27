@@ -42,6 +42,29 @@ bool isPalindrome(const std::string& s) {
 
 **Result:** "holle"
 
+**C++ Code Snippet:**
+```cpp
+#include <string>
+#include <algorithm>
+
+bool isVowel(char c) {
+    c = std::tolower(c);
+    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+}
+
+std::string reverseVowels(std::string s) {
+    int left = 0, right = s.length() - 1;
+    while (left < right) {
+        while (left < right && !isVowel(s[left])) left++;
+        while (left < right && !isVowel(s[right])) right--;
+        if (left < right) {
+            std::swap(s[left++], s[right--]);
+        }
+    }
+    return s;
+}
+```
+
 ---
 
 ## Example 3 — String to Integer (atoi)
@@ -54,6 +77,32 @@ bool isPalindrome(const std::string& s) {
 3. Read digits: '4', '2'. Compute: `0 * 10 + 4 = 4`, then `4 * 10 + 2 = 42`.
 4. Check overflow: 42 is well within `[INT_MIN, INT_MAX]`.
 5. Apply sign: `-42`.
+
+**C++ Code Snippet:**
+```cpp
+#include <string>
+#include <climits>
+
+int myAtoi(const std::string& s) {
+    int i = 0, n = s.length();
+    while (i < n && s[i] == ' ') i++;
+    
+    int sign = 1;
+    if (i < n && (s[i] == '+' || s[i] == '-')) {
+        sign = (s[i] == '-') ? -1 : 1;
+        i++;
+    }
+    
+    long long result = 0;
+    while (i < n && s[i] >= '0' && s[i] <= '9') {
+        result = result * 10 + (s[i] - '0');
+        if (sign * result < INT_MIN) return INT_MIN;
+        if (sign * result > INT_MAX) return INT_MAX;
+        i++;
+    }
+    return sign * result;
+}
+```
 
 ---
 
@@ -75,6 +124,24 @@ bool isPalindrome(const std::string& s) {
 
 **Result:** "fl"
 
+**C++ Code Snippet:**
+```cpp
+#include <vector>
+#include <string>
+
+std::string longestCommonPrefix(std::vector<std::string>& strs) {
+    if (strs.empty()) return "";
+    std::string prefix = strs[0];
+    for (size_t i = 1; i < strs.size(); ++i) {
+        while (strs[i].find(prefix) != 0) {
+            prefix = prefix.substr(0, prefix.length() - 1);
+            if (prefix.empty()) return "";
+        }
+    }
+    return prefix;
+}
+```
+
 ---
 
 ## Example 5 — Valid Anagram
@@ -89,3 +156,20 @@ bool isPalindrome(const std::string& s) {
 5. Verification: no counts are negative.
 
 **Result:** True
+
+**C++ Code Snippet:**
+```cpp
+#include <string>
+#include <vector>
+
+bool isAnagram(const std::string& s, const std::string& t) {
+    if (s.length() != t.length()) return false;
+    
+    int count[26] = {0};
+    for (char c : s) count[c - 'a']++;
+    for (char c : t) {
+        if (--count[c - 'a'] < 0) return false;
+    }
+    return true;
+}
+```

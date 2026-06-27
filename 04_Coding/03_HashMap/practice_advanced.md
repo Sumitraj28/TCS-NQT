@@ -67,7 +67,48 @@ int subarraySumZero(std::vector<int>& nums, int k) {
 Implement a stream data structure that accepts characters and reports the first unique character.
 
 **Full Solution (DLL + HashMap):**
-Maintain a doubly-linked list of unique characters and a map pointing to the list node. If a character is seen again, remove it from list.
+Maintain a doubly-linked list of unique characters and a hash map (`nodeMap`) pointing to the list iterator. If a character is seen again, remove it from the list in O(1) and add it to a `duplicated` set/map so it's ignored in the future.
+
+```cpp
+#include <unordered_map>
+#include <list>
+#include <vector>
+
+class FirstUnique {
+private:
+    std::list<int> uniqueList;
+    std::unordered_map<int, std::list<int>::iterator> nodeMap;
+    std::unordered_map<int, bool> duplicated;
+
+public:
+    FirstUnique(std::vector<int>& nums) {
+        for (int num : nums) {
+            add(num);
+        }
+    }
+    
+    int showFirstUnique() {
+        if (uniqueList.empty()) return -1;
+        return uniqueList.front();
+    }
+    
+    void add(int value) {
+        if (duplicated[value]) return;
+        if (nodeMap.count(value)) {
+            uniqueList.erase(nodeMap[value]);
+            nodeMap.erase(value);
+            duplicated[value] = true;
+        } else {
+            uniqueList.push_back(value);
+            auto it = uniqueList.end();
+            it--;
+            nodeMap[value] = it;
+        }
+    }
+};
+```
+
+**Complexity:** Time O(1) per operation | Space O(N)
 
 ---
 
@@ -76,7 +117,48 @@ Maintain a doubly-linked list of unique characters and a map pointing to the lis
 
 Solve Set Matrix Zeroes using O(1) extra space.
 
-**Full Solution:** Use the first row and first column of the matrix itself as markers instead of separate sets.
+**Full Solution:**
+Use the first row and first column of the matrix itself as markers. First, check if the first row and first column have any zeros. Then scan the rest of the matrix, setting `matrix[i][0] = 0` and `matrix[0][j] = 0` whenever `matrix[i][j] == 0`. Finally, use these markers to zero out the cells, and handle the first row/column zero status.
+
+```cpp
+#include <vector>
+
+void setZeroes(std::vector<std::vector<int>>& matrix) {
+    int m = matrix.size(), n = matrix[0].size();
+    bool firstRowZero = false, firstColZero = false;
+    
+    for (int i = 0; i < m; ++i) {
+        if (matrix[i][0] == 0) firstColZero = true;
+    }
+    for (int j = 0; j < n; ++j) {
+        if (matrix[0][j] == 0) firstRowZero = true;
+    }
+    
+    for (int i = 1; i < m; ++i) {
+        for (int j = 1; j < n; ++j) {
+            if (matrix[i][j] == 0) {
+                matrix[i][0] = 0;
+                matrix[0][j] = 0;
+            }
+        }
+    }
+    for (int i = 1; i < m; ++i) {
+        for (int j = 1; j < n; ++j) {
+            if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+    if (firstColZero) {
+        for (int i = 0; i < m; ++i) matrix[i][0] = 0;
+    }
+    if (firstRowZero) {
+        for (int j = 0; j < n; ++j) matrix[0][j] = 0;
+    }
+}
+```
+
+**Complexity:** Time O(M * N) | Space O(1)
 
 ---
 
@@ -112,8 +194,32 @@ int findDuplicateCycle(const std::vector<int>& nums) {
 `nums = [1,2,1,2,3]`, `k = 2`. Find number of subarrays with exactly k different integers.
 
 **Full Solution:**
-`exact(K) = atMost(K) - atMost(K-1)`. Compute `atMost` using sliding window.
+The number of subarrays with exactly K distinct integers can be computed as: `exact(K) = atMost(K) - atMost(K-1)`. The `atMost(K)` function uses sliding window where we increment a count when adding elements and shrink when unique keys count exceeds `K`.
 
+```cpp
+#include <vector>
+#include <unordered_map>
+
+int atMost(std::vector<int>& nums, int k) {
+    std::unordered_map<int, int> count;
+    int left = 0, result = 0;
+    for (int right = 0; right < nums.size(); ++right) {
+        if (count[nums[right]]++ == 0) k--;
+        while (k < 0) {
+            if (--count[nums[left]] == 0) k++;
+            left++;
+        }
+        result += right - left + 1;
+    }
+    return result;
+}
+
+int subarraysWithKDistinct(std::vector<int>& nums, int k) {
+    return atMost(nums, k) - atMost(nums, k - 1);
+}
+```
+
+**Complexity:** Time O(N) | Space O(N)
 **Answer:** 7
 
 ---
@@ -156,12 +262,86 @@ int longestConsecutive(const std::vector<int>& nums) {
 
 Find max points on a line using slopes map.
 
+**Full Solution:**
+For each point `i`, compute the slopes to all other points `j`. To avoid precision issues with floating-point slope representation, represent the slope as a normalized ratio `(dy / gcd, dx / gcd)`. Store the slope frequencies in a map and take the maximum.
+
+```cpp
+#include <vector>
+#include <map>
+#include <algorithm>
+
+int gcd(int a, int b) {
+    while (b) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int maxPoints(std::vector<std::vector<int>>& points) {
+    int n = points.size();
+    if (n <= 2) return n;
+    int maxVal = 0;
+    for (int i = 0; i < n; ++i) {
+        std::map<std::pair<int, int>, int> slopeMap;
+        int duplicate = 1;
+        for (int j = i + 1; j < n; ++j) {
+            int dy = points[j][1] - points[i][1];
+            int dx = points[j][0] - points[i][0];
+            if (dy == 0 && dx == 0) {
+                duplicate++;
+                continue;
+            }
+            int g = gcd(dy, dx);
+            dy /= g;
+            dx /= g;
+            if (dx < 0 || (dx == 0 && dy < 0)) {
+                dy = -dy;
+                dx = -dx;
+            }
+            slopeMap[{dy, dx}]++;
+        }
+        int localMax = 0;
+        for (const auto& pair : slopeMap) {
+            localMax = std::max(localMax, pair.second);
+        }
+        maxVal = std::max(maxVal, localMax + duplicate);
+      }
+      return maxVal;
+}
+```
+
+**Complexity:** Time O(N² log N) | Space O(N)
+
 ---
 
 ### Q9 — Subarray Product Less Than K
 **Difficulty:** Hard | **Time:** 150s | **TCS Frequency:** Low
 
 Find count of contiguous subarrays whose product is strictly less than k. Use sliding window.
+
+**Full Solution:**
+Maintain a sliding window where the product of elements is less than `k`. Every time `right` advances, if product exceeds `k`, divide by elements from the `left` pointer. The number of valid subarrays ending at `right` is `right - left + 1`.
+
+```cpp
+#include <vector>
+
+int numSubarrayProductLessThanK(std::vector<int>& nums, int k) {
+    if (k <= 1) return 0;
+    int prod = 1, count = 0, left = 0;
+    for (int right = 0; right < nums.size(); ++right) {
+        prod *= nums[right];
+        while (prod >= k) {
+            prod /= nums[left++];
+        }
+        count += right - left + 1;
+    }
+    return count;
+}
+```
+
+**Complexity:** Time O(N) | Space O(1)
 
 ---
 
@@ -170,3 +350,43 @@ Find count of contiguous subarrays whose product is strictly less than k. Use sl
 
 Convert fraction to decimal representation. If recurring, wrap inside parenthesis.
 Use map to track fractional remainder positions.
+
+**Full Solution:**
+Use integer division to get the integral part. Compute remainder. If remainder is non-zero, append `.` and proceed with fractional division. Maintain a hash map mapping each remainder value to its index in the result string. If a remainder repeats, insert open parenthesis `(` at its index and append `)`.
+
+```cpp
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+#include <cmath>
+
+std::string fractionToDecimal(int numerator, int denominator) {
+    if (numerator == 0) return "0";
+    std::string result = "";
+    if ((numerator < 0) ^ (denominator < 0)) result += "-";
+    
+    long long num = std::abs((long long)numerator);
+    long long den = std::abs((long long)denominator);
+    
+    result += std::to_string(num / den);
+    long long rem = num % den;
+    if (rem == 0) return result;
+    
+    result += ".";
+    std::unordered_map<long long, int> remMap;
+    while (rem != 0) {
+        if (remMap.count(rem)) {
+            result.insert(remMap[rem], "(");
+            result += ")";
+            break;
+        }
+        remMap[rem] = result.length();
+        rem *= 10;
+        result += std::to_string(rem / den);
+        rem %= den;
+    }
+    return result;
+}
+```
+
+**Complexity:** Time O(Denominator) | Space O(Denominator) (based on period length)

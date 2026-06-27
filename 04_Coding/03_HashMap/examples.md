@@ -14,6 +14,24 @@
 
 **Result:** `[1, 2]`
 
+**C++ Code Snippet:**
+```cpp
+#include <vector>
+#include <unordered_map>
+
+std::vector<int> twoSum(const std::vector<int>& nums, int target) {
+    std::unordered_map<int, int> seen;
+    for (int i = 0; i < nums.size(); ++i) {
+        int complement = target - nums[i];
+        if (seen.count(complement)) {
+            return {seen[complement], i};
+        }
+        seen[nums[i]] = i;
+    }
+    return {};
+}
+```
+
 ---
 
 ## Example 2 — Intersection of Two Arrays (Unique)
@@ -32,6 +50,24 @@
 4. `result` set contains `{4, 9}`.
 
 **Result:** `[4, 9]`
+
+**C++ Code Snippet:**
+```cpp
+#include <vector>
+#include <unordered_set>
+
+std::vector<int> intersection(const std::vector<int>& nums1, const std::vector<int>& nums2) {
+    std::unordered_set<int> s1(nums1.begin(), nums1.end());
+    std::vector<int> result;
+    for (int num : nums2) {
+        if (s1.count(num)) {
+            result.push_back(num);
+            s1.erase(num);
+        }
+    }
+    return result;
+}
+```
 
 ---
 
@@ -53,6 +89,33 @@
 
 **Result:** `[1, 2]`
 
+**C++ Code Snippet:**
+```cpp
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+
+std::vector<int> topKFrequent(const std::vector<int>& nums, int k) {
+    std::unordered_map<int, int> count;
+    for (int num : nums) count[num]++;
+    
+    int n = nums.size();
+    std::vector<std::vector<int>> buckets(n + 1);
+    for (const auto& pair : count) {
+        buckets[pair.second].push_back(pair.first);
+    }
+    
+    std::vector<int> result;
+    for (int i = n; i >= 0 && result.size() < k; --i) {
+        for (int num : buckets[i]) {
+            result.push_back(num);
+            if (result.size() == k) break;
+        }
+    }
+    return result;
+}
+```
+
 ---
 
 ## Example 4 — Group Anagrams
@@ -69,6 +132,29 @@
 - "bat": sort key is "abt". Map: `{"abt": ["bat"], ...}`
 - Gather vectors: `[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]`.
 
+**C++ Code Snippet:**
+```cpp
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+
+std::vector<std::vector<std::string>> groupAnagrams(const std::vector<std::string>& strs) {
+    std::unordered_map<std::string, std::vector<std::string>> groups;
+    for (const std::string& s : strs) {
+        std::string key = s;
+        std::sort(key.begin(), key.end());
+        groups[key].push_back(s);
+    }
+    
+    std::vector<std::vector<std::string>> result;
+    for (const auto& pair : groups) {
+        result.push_back(pair.second);
+    }
+    return result;
+}
+```
+
 ---
 
 ## Example 5 — Subarray Sum Equals K
@@ -82,3 +168,23 @@
 - num=3: `sum = 6`. `need = 6 - 3 = 3`. Map HAS 3 (count=1) → `count = 2`. Map: `{0:1, 1:1, 3:1, 6:1}`.
 
 **Result:** 2
+
+**C++ Code Snippet:**
+```cpp
+#include <vector>
+#include <unordered_map>
+
+int subarraySum(const std::vector<int>& nums, int k) {
+    std::unordered_map<int, int> prefix;
+    prefix[0] = 1;
+    int sum = 0, count = 0;
+    for (int num : nums) {
+        sum += num;
+        if (prefix.count(sum - k)) {
+            count += prefix[sum - k];
+        }
+        prefix[sum]++;
+    }
+    return count;
+}
+```

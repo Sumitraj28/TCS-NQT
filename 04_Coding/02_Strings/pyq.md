@@ -93,19 +93,67 @@ std::string removeVowels(const std::string& s) {
 ### PYQ4 — Count Vowels, Consonants, Spaces, and Digits
 **Difficulty:** Easy | **Time:** 60s | **TCS Frequency:** High
 
-**Problem:** Count count of vowels, consonants, spaces, and digits in a string.
+**Problem:** Count the occurrences of vowels, consonants, spaces, and digits in a string.
 
-**C++ Solution:** Standard loop using `std::isdigit(c)`, `std::isspace(c)`, and custom vowel check.
+**C++ Solution:**
+```cpp
+#include <string>
+#include <cctype>
+
+struct Counts {
+    int vowels = 0;
+    int consonants = 0;
+    int spaces = 0;
+    int digits = 0;
+};
+
+Counts countAll(const std::string& s) {
+    Counts counts;
+    for (char c : s) {
+        if (std::isdigit(c)) {
+            counts.digits++;
+        } else if (std::isspace(c)) {
+            counts.spaces++;
+        } else if (std::isalpha(c)) {
+            char lower = std::tolower(c);
+            if (lower == 'a' || lower == 'e' || lower == 'i' || lower == 'o' || lower == 'u') {
+                counts.vowels++;
+            } else {
+                counts.consonants++;
+            }
+        }
+    }
+    return counts;
+}
+```
+**Complexity:** Time O(N) | Space O(1)
 
 ---
 
 ### PYQ5 — Non-Repeating Character
 **Difficulty:** Medium | **Time:** 90s | **TCS Frequency:** High
 
-**Problem:** Find the first non-repeating character.
+**Problem:** Find the first non-repeating character in a string.
 
 Input: `"apple"`  
 Output: 'a'
 
-**C++ Solution:** Two-pass frequency check.
+**C++ Solution:**
+```cpp
+#include <string>
+
+char firstNonRepeating(const std::string& s) {
+    int freq[256] = {0};
+    for (char c : s) {
+        freq[(unsigned char)c]++;
+    }
+    for (char c : s) {
+        if (freq[(unsigned char)c] == 1) {
+            return c;
+        }
+    }
+    return '\0';
+}
+```
+**Complexity:** Time O(N) | Space O(1) (fixed 256 size array)
 ```

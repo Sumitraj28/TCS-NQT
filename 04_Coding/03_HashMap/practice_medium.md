@@ -96,8 +96,31 @@ std::vector<int> topKFrequent(std::vector<int>& nums, int k) {
 
 `strs = ["eat", "tea", "tan", "ate", "nat", "bat"]`. Group together.
 
-**Full Solution:** Group elements in a hash map using the sorted string as signature key.
+**Full Solution:**
+Group elements in a hash map using the sorted string as signature key.
 
+```cpp
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+
+std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs) {
+    std::unordered_map<std::string, std::vector<std::string>> groups;
+    for (const std::string& s : strs) {
+        std::string key = s;
+        std::sort(key.begin(), key.end());
+        groups[key].push_back(s);
+    }
+    std::vector<std::vector<std::string>> result;
+    for (const auto& pair : groups) {
+        result.push_back(pair.second);
+    }
+    return result;
+}
+```
+
+**Complexity:** Time O(N * L log L) where L is max word length | Space O(N * L)
 **Answer:** `[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]`
 
 ---
@@ -131,7 +154,24 @@ std::vector<int> twoSum(std::vector<int>& nums, int target) {
 
 `s = "leetcode"`. Find index of first unique character.
 
-**Full Solution:** frequency map + scan.
+**Full Solution:**
+Build a frequency map using a hash map or direct access table. Scan the string a second time and return the index of the first character with a frequency count of 1.
+
+```cpp
+#include <string>
+#include <unordered_map>
+
+int firstUniqChar(std::string s) {
+    std::unordered_map<char, int> freq;
+    for (char c : s) freq[c]++;
+    for (int i = 0; i < s.length(); ++i) {
+        if (freq[s[i]] == 1) return i;
+    }
+    return -1;
+}
+```
+
+**Complexity:** Time O(N) | Space O(1) (char set is limited)
 **Answer:** 0 (character 'l')
 
 ---
@@ -141,7 +181,25 @@ std::vector<int> twoSum(std::vector<int>& nums, int target) {
 
 `nums = [2,2,1,1,1,2,2]`. Find majority element.
 
-**Full Solution:** Track frequency count. If any `count[x] > n/2`, return `x`.
+**Full Solution:**
+Use a hash map to count the frequencies of all numbers in the array. Traverse the map and return the key whose frequency is strictly greater than `n / 2`.
+
+```cpp
+#include <vector>
+#include <unordered_map>
+
+int majorityElement(std::vector<int>& nums) {
+    std::unordered_map<int, int> count;
+    int n = nums.size();
+    for (int num : nums) {
+        count[num]++;
+        if (count[num] > n / 2) return num;
+    }
+    return -1;
+}
+```
+
+**Complexity:** Time O(N) | Space O(N)
 **Answer:** 2
 
 ---
@@ -239,8 +297,34 @@ int findMaxLength(std::vector<int>& nums) {
 
 `words = ["i","love","leetcode","i","love","coding"]`, k=2. Get top 2 frequent words (sort alphabetically on a tie).
 
-**Full Solution:** Map count -> custom comparator sort.
+**Full Solution:**
+Count the occurrences of words in a hash map. Copy the unique words to a vector and sort them using a custom comparator that ranks by frequency descending, then by alphabetical order ascending.
 
+```cpp
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+
+std::vector<std::string> topKFrequent(std::vector<std::string>& words, int k) {
+    std::unordered_map<std::string, int> count;
+    for (const std::string& w : words) count[w]++;
+    
+    std::vector<std::pair<std::string, int>> temp(count.begin(), count.end());
+    std::sort(temp.begin(), temp.end(), [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
+        if (a.second == b.second) return a.first < b.first;
+        return a.second > b.second;
+    });
+    
+    std::vector<std::string> result;
+    for (int i = 0; i < k; ++i) {
+        result.push_back(temp[i].first);
+    }
+    return result;
+}
+```
+
+**Complexity:** Time O(N log N) | Space O(N)
 **Answer:** `["i", "love"]`
 
 ---
@@ -251,8 +335,25 @@ int findMaxLength(std::vector<int>& nums) {
 `arr = [1,2,2,1,1,3]`. Return true if number of occurrences of each value in array is unique.
 
 **Full Solution:**
-Build freq map: `{1:3, 2:2, 3:1}`. Check if values of map contain duplicate elements using set: values = `{3, 2, 1}` (no duplicates).
+Build a frequency map. Then insert all frequency counts into an `unordered_set`. If any insertion fails, it means there are duplicate counts, so return `false`.
 
+```cpp
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+
+bool uniqueOccurrences(std::vector<int>& arr) {
+    std::unordered_map<int, int> freq;
+    for (int num : arr) freq[num]++;
+    std::unordered_set<int> occurrences;
+    for (const auto& pair : freq) {
+        if (!occurrences.insert(pair.second).second) return false;
+    }
+    return true;
+}
+```
+
+**Complexity:** Time O(N) | Space O(N)
 **Answer:** true
 
 ---
@@ -262,7 +363,26 @@ Build freq map: `{1:3, 2:2, 3:1}`. Check if values of map contain duplicate elem
 
 `arr = [4,3,2,7,8,2,3,1]`. Find all duplicates.
 
-**Full Solution:** HashSet duplicate check.
+**Full Solution:**
+Insert each element into an `unordered_set`. If an insertion fails, add it to the result list of duplicates.
+
+```cpp
+#include <vector>
+#include <unordered_set>
+
+std::vector<int> findDuplicates(const std::vector<int>& arr) {
+    std::unordered_set<int> seen;
+    std::vector<int> result;
+    for (int num : arr) {
+        if (!seen.insert(num).second) {
+            result.push_back(num);
+        }
+    }
+    return result;
+}
+```
+
+**Complexity:** Time O(N) | Space O(N)
 **Answer:** `[2, 3]`
 
 ---
@@ -272,7 +392,31 @@ Build freq map: `{1:3, 2:2, 3:1}`. Check if values of map contain duplicate elem
 
 `nums = [4, 5, 0, -2, -3, 1]`, `k = 5`. Count subarrays whose sum is divisible by 5.
 
-**Full Solution (Prefix Sum Modulo Map):**
+**Full Solution:**
+Maintain prefix sum modulo K in a hash map. For negative sums, normalize remainder to `(rem + K) % K`. Increment count by the number of times this remainder was seen before, and update map.
+
+```cpp
+#include <vector>
+#include <unordered_map>
+
+int subarraysDivByK(std::vector<int>& nums, int k) {
+    std::unordered_map<int, int> remMap;
+    remMap[0] = 1;
+    int sum = 0, count = 0;
+    for (int num : nums) {
+        sum += num;
+        int rem = sum % k;
+        if (rem < 0) rem += k;
+        if (remMap.count(rem)) {
+            count += remMap[rem];
+        }
+        remMap[rem]++;
+    }
+    return count;
+}
+```
+
+**Complexity:** Time O(N) | Space O(K)
 **Answer:** 7
 
 ---
@@ -281,5 +425,25 @@ Build freq map: `{1:3, 2:2, 3:1}`. Check if values of map contain duplicate elem
 **Difficulty:** Medium | **Time:** 90s | **TCS Frequency:** Medium
 
 Given list of items, sort them by custom ranking mapping key to rank.
-**Full Solution:** Use hash map lookup inside sort comparator.
+
+**Full Solution:**
+Use a custom sort lambda comparator capturing the ranks map.
+
+```cpp
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+
+std::vector<std::string> customSort(std::vector<std::string>& items, const std::unordered_map<std::string, int>& ranks) {
+    std::sort(items.begin(), items.end(), [&](const std::string& a, const std::string& b) {
+        int rankA = ranks.count(a) ? ranks.at(a) : 1e9;
+        int rankB = ranks.count(b) ? ranks.at(b) : 1e9;
+        if (rankA == rankB) return a < b;
+        return rankA < rankB;
+    });
+    return items;
+}
 ```
+
+**Complexity:** Time O(N log N) | Space O(1) (excluding map)
