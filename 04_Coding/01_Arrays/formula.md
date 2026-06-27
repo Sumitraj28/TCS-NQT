@@ -2,16 +2,16 @@
 
 ## Core Operations
 
-| Operation | Array (Java int[]) | ArrayList (Java) | Python list |
-|-----------|-------------------|-----------------|-------------|
-| Access by index | O(1) | O(1) | O(1) |
-| Update by index | O(1) | O(1) | O(1) |
-| Append to end | N/A (fixed) | O(1) amortized | O(1) amortized |
-| Insert at position i | O(n) | O(n) | O(n) |
-| Delete at position i | O(n) | O(n) | O(n) |
-| Search (unsorted) | O(n) | O(n) | O(n) |
-| Search (sorted, binary) | O(log n) | O(log n) | O(log n) |
-| Sort | O(n log n) | O(n log n) | O(n log n) |
+| Operation | Array (`int arr[n]`) | Vector (`std::vector<int>`) |
+|-----------|--------------------|----------------------------|
+| Access by index | O(1) | O(1) |
+| Update by index | O(1) | O(1) |
+| Append to end | N/A (fixed) | O(1) amortized |
+| Insert at position i | O(n) | O(n) |
+| Delete at position i | O(n) | O(n) |
+| Search (unsorted) | O(n) | O(n) |
+| Search (sorted, binary) | O(log n) | O(log n) |
+| Sort | O(n log n) | O(n log n) |
 
 ---
 
@@ -28,7 +28,7 @@
 | Two Pointer (sorted) | O(n) | O(1) | Pair sum, triplet sum |
 | Two Pointer (same dir.) | O(n) | O(1) | Partition, move elements |
 | Frequency Array | O(n + max_val) | O(max_val) | Count, find missing/duplicate |
-| HashMap approach | O(n) avg | O(n) | Two sum, subarray sum = k |
+| Hash Table approach | O(n) avg | O(n) | Two sum, subarray sum = k |
 | Sorting + pointer | O(n log n) | O(1) | When order doesn't matter |
 | Merge two sorted | O(m+n) | O(m+n) or O(1) in-place | Merge sorted arrays |
 | Rotate (reverse method) | O(n) | O(1) | Rotation problems |
@@ -63,7 +63,7 @@ dp[i] = max(nums[i], dp[i-1] + nums[i])
 answer = max(dp[0], dp[1], ..., dp[n-1])
 ```
 
-### Subarray Count with Sum = k (using prefix sum + HashMap)
+### Subarray Count with Sum = k (using prefix sum + std::unordered_map)
 ```
 For each index i:
   count += freq[prefixSum - k]

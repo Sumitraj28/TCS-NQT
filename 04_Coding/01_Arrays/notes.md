@@ -3,12 +3,13 @@
 ## What Is an Array?
 
 An array is a contiguous block of memory storing elements of the same type, accessed by zero-based index.
-In Java: `int[] arr = new int[n];` — fixed size, O(1) random access.
-In Python: `arr = []` — dynamic list, O(1) amortized append, O(1) random access.
+In C++: 
+- Fixed size: `int arr[n];` or `std::array<int, n> arr;` — allocated on stack.
+- Dynamic size: `std::vector<int> arr(n);` — allocated on heap, supports O(1) random access, and amortized O(1) append.
 
 **Key properties:**
 - Random access: O(1)
-- Insert/Delete at end: O(1) amortized
+- Insert/Delete at end: O(1) amortized (for `std::vector`)
 - Insert/Delete at arbitrary position: O(n) — elements must shift
 - Search (unsorted): O(n)
 - Search (sorted): O(log n) with binary search
@@ -21,11 +22,17 @@ In Python: `arr = []` — dynamic list, O(1) amortized append, O(1) random acces
 
 **Core idea:** At each position, decide: is it better to extend the current subarray, or start fresh from this element?
 
-```java
-int maxSum = nums[0], currentSum = nums[0];
-for (int i = 1; i < nums.length; i++) {
-    currentSum = Math.max(nums[i], currentSum + nums[i]);
-    maxSum = Math.max(maxSum, currentSum);
+```cpp
+#include <vector>
+#include <algorithm>
+
+int maxSubArray(const std::vector<int>& nums) {
+    int maxSum = nums[0], currentSum = nums[0];
+    for (size_t i = 1; i < nums.size(); ++i) {
+        currentSum = std::max(nums[i], currentSum + nums[i]);
+        maxSum = std::max(maxSum, currentSum);
+    }
+    return maxSum;
 }
 ```
 
@@ -41,26 +48,35 @@ for (int i = 1; i < nums.length; i++) {
 
 **Problem:** Answer multiple range-sum queries efficiently.
 
-**Core idea:** Build an auxiliary array where `prefix[i] = nums[0] + nums[1] + ... + nums[i]`.
-Then sum of range [l, r] = `prefix[r] - prefix[l-1]` in O(1).
+**Core idea:** Build an auxiliary array where `prefix[i] = nums[0] + nums[1] + ... + nums[i-1]`.
+Then sum of range [l, r] = `prefix[r+1] - prefix[l]` in O(1).
 
-```java
-int[] prefix = new int[n + 1]; // prefix[0] = 0
-for (int i = 0; i < n; i++) prefix[i+1] = prefix[i] + nums[i];
-// Sum from index l to r (0-indexed):
-int rangeSum = prefix[r+1] - prefix[l];
+```cpp
+std::vector<int> prefix(n + 1, 0);
+for (int i = 0; i < n; ++i) {
+    prefix[i + 1] = prefix[i] + nums[i];
+}
+// Sum from index l to r (0-indexed, inclusive):
+int rangeSum = prefix[r + 1] - prefix[l];
 ```
 
-**TCS use case:** Subarray sum equals K — use HashMap of prefix sums to count in O(n).
+**TCS use case:** Subarray sum equals K — use `std::unordered_map` of prefix sums to count in O(n).
 
-```java
-HashMap<Integer, Integer> map = new HashMap<>();
-map.put(0, 1);
-int sum = 0, count = 0;
-for (int num : nums) {
-    sum += num;
-    count += map.getOrDefault(sum - k, 0);
-    map.put(sum, map.getOrDefault(sum, 0) + 1);
+```cpp
+#include <unordered_map>
+
+int subarraySum(const std::vector<int>& nums, int k) {
+    std::unordered_map<int, int> prefix_map;
+    prefix_map[0] = 1;
+    int sum = 0, count = 0;
+    for (int num : nums) {
+        sum += num;
+        if (prefix_map.count(sum - k)) {
+            count += prefix_map[sum - k];
+        }
+        prefix_map[sum]++;
+    }
+    return count;
 }
 ```
 
@@ -71,25 +87,25 @@ for (int num : nums) {
 **Problem:** Find the maximum/minimum/sum of a subarray of fixed size k, or find the smallest window satisfying a condition.
 
 **Fixed window (size k):**
-```java
+```cpp
 // Step 1: Build first window
 int windowSum = 0;
-for (int i = 0; i < k; i++) windowSum += nums[i];
+for (int i = 0; i < k; ++i) windowSum += nums[i];
 int maxSum = windowSum;
 // Step 2: Slide — add right, remove left
-for (int i = k; i < nums.length; i++) {
+for (size_t i = k; i < nums.size(); ++i) {
     windowSum += nums[i] - nums[i - k];
-    maxSum = Math.max(maxSum, windowSum);
+    maxSum = std::max(maxSum, windowSum);
 }
 ```
 
 **Variable window (shrink when condition violated):**
-```java
-int left = 0, windowSum = 0, minLen = Integer.MAX_VALUE;
-for (int right = 0; right < nums.length; right++) {
+```cpp
+int left = 0, windowSum = 0, minLen = 1e9;
+for (int right = 0; right < nums.size(); ++right) {
     windowSum += nums[right];
     while (windowSum >= target) {
-        minLen = Math.min(minLen, right - left + 1);
+        minLen = std::min(minLen, right - left + 1);
         windowSum -= nums[left++];
     }
 }
@@ -107,8 +123,8 @@ for (int right = 0; right < nums.length; right++) {
 **Problem:** Find a pair/triplet with given sum, or partition an array in-place.
 
 **Opposite ends (sorted array):**
-```java
-int left = 0, right = nums.length - 1;
+```cpp
+int left = 0, right = nums.size() - 1;
 while (left < right) {
     int sum = nums[left] + nums[right];
     if (sum == target) { /* found */ break; }
@@ -118,13 +134,13 @@ while (left < right) {
 ```
 
 **Same direction (fast/slow pointers):**
-```java
+```cpp
 // Move zeroes to end
 int insertPos = 0;
-for (int i = 0; i < nums.length; i++) {
+for (int i = 0; i < nums.size(); ++i) {
     if (nums[i] != 0) nums[insertPos++] = nums[i];
 }
-while (insertPos < nums.length) nums[insertPos++] = 0;
+while (insertPos < nums.size()) nums[insertPos++] = 0;
 ```
 
 **When to use two pointer:**
@@ -138,9 +154,9 @@ while (insertPos < nums.length) nums[insertPos++] = 0;
 
 **Problem:** Count occurrences of elements when values are bounded.
 
-```java
-// If values are in range [0, max]
-int[] freq = new int[max + 1];
+```cpp
+// If values are in range [0, max_val]
+std::vector<int> freq(max_val + 1, 0);
 for (int num : nums) freq[num]++;
 // freq[x] = number of times x appears
 ```
@@ -152,10 +168,10 @@ for (int num : nums) freq[num]++;
 - Sort Colors (Dutch National Flag is a variant)
 
 **In-place marking trick (O(1) space):**
-```java
+```cpp
 // For array with values in [1, n], use sign as a visited marker
-for (int num : nums) {
-    int idx = Math.abs(num) - 1;
+for (int i = 0; i < nums.size(); ++i) {
+    int idx = std::abs(nums[i]) - 1;
     if (nums[idx] > 0) nums[idx] = -nums[idx]; // mark as visited
 }
 // After loop: nums[i] > 0 means (i+1) was not visited → missing
@@ -168,12 +184,12 @@ for (int num : nums) {
 **Rotate right by k positions:** The last k elements become the first k.
 
 **Reverse-based approach (O(1) space):**
-```java
+```cpp
 // Rotate right by k
-k = k % nums.length; // handle k > n
-reverse(nums, 0, nums.length - 1); // reverse all
-reverse(nums, 0, k - 1);           // reverse first k
-reverse(nums, k, nums.length - 1); // reverse rest
+k = k % nums.size(); // handle k > n
+std::reverse(nums.begin(), nums.end());
+std::reverse(nums.begin(), nums.begin() + k);
+std::reverse(nums.begin() + k, nums.end());
 ```
 
 **Why it works:**
@@ -187,8 +203,7 @@ Original: `[1,2,3,4,5,6,7]`, rotate right by 3 → `[5,6,7,1,2,3,4]`
 ## Pattern 7 — Merge Arrays
 
 **Merge two sorted arrays into one sorted array (extra space):**
-```java
-// Two pointer merge into result array
+```cpp
 int i = 0, j = 0, k = 0;
 while (i < m && j < n) {
     result[k++] = (A[i] <= B[j]) ? A[i++] : B[j++];
@@ -198,7 +213,7 @@ while (j < n) result[k++] = B[j++];
 ```
 
 **Merge sorted array in-place (from right — LeetCode 88):**
-```java
+```cpp
 // Place elements from the back to avoid overwriting
 int i = m-1, j = n-1, k = m+n-1;
 while (i >= 0 && j >= 0)
@@ -210,12 +225,12 @@ while (j >= 0) nums1[k--] = nums2[j--];
 
 ## Dutch National Flag (Sort Colors — 3-way partition)
 
-```java
+```cpp
 int low = 0, mid = 0, high = n - 1;
 while (mid <= high) {
-    if (nums[mid] == 0)      { swap(low++, mid++); }
+    if (nums[mid] == 0)      { std::swap(nums[low++], nums[mid++]); }
     else if (nums[mid] == 1) { mid++; }
-    else                     { swap(mid, high--); }
+    else                     { std::swap(nums[mid], nums[high--]); }
 }
 ```
 
@@ -223,7 +238,7 @@ while (mid <= high) {
 
 ## TCS-Specific Patterns to Watch For
 
-1. **"Find pairs with sum X"** → Two pointer (sorted) or HashMap
+1. **"Find pairs with sum X"** → Two pointer (sorted) or std::unordered_map
 2. **"Maximum/minimum subarray"** → Kadane's
 3. **"Sum of elements between indices L and R"** → Prefix sum
 4. **"Window of size k"** → Sliding window

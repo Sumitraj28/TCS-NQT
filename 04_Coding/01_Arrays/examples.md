@@ -22,13 +22,18 @@
 **Answer: 7** (subarray `[3, -1, 5]`)
 
 **Code:**
-```java
-int maxSum = nums[0], currentSum = nums[0];
-for (int i = 1; i < nums.length; i++) {
-    currentSum = Math.max(nums[i], currentSum + nums[i]);
-    maxSum = Math.max(maxSum, currentSum);
+```cpp
+#include <vector>
+#include <algorithm>
+
+int maxSubArray(std::vector<int>& nums) {
+    int maxSum = nums[0], currentSum = nums[0];
+    for (size_t i = 1; i < nums.size(); ++i) {
+        currentSum = std::max(nums[i], currentSum + nums[i]);
+        maxSum = std::max(maxSum, currentSum);
+    }
+    return maxSum;
 }
-// maxSum = 7
 ```
 
 ---
@@ -37,7 +42,7 @@ for (int i = 1; i < nums.length; i++) {
 
 **Problem:** `nums = [1, 2, 3]`, `k = 3`. Count subarrays with sum exactly equal to 3.
 
-**Pattern:** Prefix Sum + HashMap
+**Pattern:** Prefix Sum + `std::unordered_map`
 
 **Expected answer: 2** (subarrays `[1,2]` and `[3]`)
 
@@ -66,14 +71,16 @@ for (int i = 1; i < nums.length; i++) {
 4. Reverse remaining (index 3 to 6): `[5,6,7,1,2,3,4]` ✓
 
 **Code:**
-```java
-private void reverse(int[] arr, int l, int r) {
-    while (l < r) { int t = arr[l]; arr[l]=arr[r]; arr[r]=t; l++; r--; }
+```cpp
+#include <vector>
+#include <algorithm>
+
+void rotate(std::vector<int>& nums, int k) {
+    k = k % nums.size();
+    std::reverse(nums.begin(), nums.end());
+    std::reverse(nums.begin(), nums.begin() + k);
+    std::reverse(nums.begin() + k, nums.end());
 }
-k = k % nums.length;
-reverse(nums, 0, nums.length-1);
-reverse(nums, 0, k-1);
-reverse(nums, k, nums.length-1);
 ```
 
 ---

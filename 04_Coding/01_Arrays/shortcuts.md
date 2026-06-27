@@ -1,124 +1,72 @@
-# Arrays — Coding Shortcuts
+# Arrays — Coding Shortcuts (C++ STL)
 
-These are genuine time-savers in a 45-minute coding exam — language built-ins and idioms that replace 5–10 lines of code with 1.
+These are genuine time-savers in a 45-minute coding exam — C++ Standard Template Library (STL) features that replace 5–10 lines of code with 1.
 
 ---
 
-## Java Shortcuts
+## C++ STL Shortcuts
 
-### Sort an array
-```java
-Arrays.sort(arr);                          // ascending, O(n log n)
-Arrays.sort(arr, Collections.reverseOrder()); // descending — only works on Integer[], not int[]
-// For int[] descending: sort then reverse, or use stream
+### Sort an array / vector
+```cpp
+#include <algorithm>
+
+std::sort(arr.begin(), arr.end());                      // ascending, O(n log n)
+std::sort(arr.rbegin(), arr.rend());                    // descending, O(n log n)
+std::sort(arr.begin(), arr.end(), std::greater<int>()); // descending using greater comparator
 ```
 
-### Convert int[] to Integer[] (needed for reverseOrder / List operations)
-```java
-Integer[] boxed = Arrays.stream(arr).boxed().toArray(Integer[]::new);
+### Copy a vector
+```cpp
+std::vector<int> copy = arr;                             // deep copy constructor
+std::vector<int> partial(arr.begin() + l, arr.begin() + r); // [l, r) range copy
 ```
 
-### Copy an array
-```java
-int[] copy = Arrays.copyOf(arr, arr.length);
-int[] partial = Arrays.copyOfRange(arr, l, r); // [l, r) exclusive
+### Fill a vector / array
+```cpp
+std::fill(arr.begin(), arr.end(), 0);                   // fill all with 0
+std::fill(arr.begin() + l, arr.begin() + r, -1);        // fill [l, r) with -1
 ```
 
-### Fill an array
-```java
-Arrays.fill(arr, 0);         // fill all with 0
-Arrays.fill(arr, l, r, -1); // fill [l, r) with -1
+### Max / Min of a vector (STL algorithms)
+```cpp
+#include <numeric>
+
+int max_val = *std::max_element(arr.begin(), arr.end()); // returns iterator, dereference with *
+int min_val = *std::min_element(arr.begin(), arr.end());
+int sum = std::accumulate(arr.begin(), arr.end(), 0);    // sum of all elements, 3rd arg is init value
 ```
 
-### Max / Min of an array (stream)
-```java
-int max = Arrays.stream(arr).max().getAsInt();
-int min = Arrays.stream(arr).min().getAsInt();
-int sum = Arrays.stream(arr).sum();
+### Reverse a vector
+```cpp
+std::reverse(arr.begin(), arr.end());
 ```
 
-### Convert array to ArrayList
-```java
-List<Integer> list = new ArrayList<>(Arrays.asList(boxedArr));
+### Frequency counting with `std::unordered_map`
+```cpp
+#include <unordered_map>
+
+std::unordered_map<int, int> freq;
+for (int num : arr) freq[num]++;
 ```
 
-### Frequency counting with HashMap
-```java
-Map<Integer, Integer> freq = new HashMap<>();
-for (int num : arr) freq.merge(num, 1, Integer::sum); // cleaner than getOrDefault
+### Check if element exists in vector (Unsorted vs Sorted)
+```cpp
+// Unsorted: O(n)
+bool exists = std::find(arr.begin(), arr.end(), target) != arr.end();
+
+// Sorted: O(log n)
+bool exists_sorted = std::binary_search(arr.begin(), arr.end(), target);
 ```
 
 ### Swap two elements
-```java
-// No temp variable using XOR (only for ints, and only when i != j)
-arr[i] ^= arr[j]; arr[j] ^= arr[i]; arr[i] ^= arr[j];
-// Safer: always use temp variable
-int temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+```cpp
+std::swap(arr[i], arr[j]);
 ```
 
----
-
-## Python Shortcuts
-
-### Sort
-```python
-arr.sort()                        # in-place ascending
-arr.sort(reverse=True)            # in-place descending
-sorted_arr = sorted(arr)          # returns new sorted list
-sorted_arr = sorted(arr, key=lambda x: -x)  # descending via key
-```
-
-### Max/Min/Sum
-```python
-max(arr), min(arr), sum(arr)      # O(n) each
-```
-
-### Count occurrences
-```python
-from collections import Counter
-freq = Counter(arr)               # dict of {element: count}
-freq.most_common(k)               # top k most frequent
-```
-
-### List slicing
-```python
-arr[l:r]    # elements from index l to r-1
-arr[::-1]   # reversed copy
-arr[::2]    # every second element
-```
-
-### Rotate right by k
-```python
-k %= len(arr)
-arr = arr[-k:] + arr[:-k]        # O(n) but creates new list
-```
-
-### Check if all elements satisfy condition
-```python
-all(x > 0 for x in arr)
-any(x == 0 for x in arr)
-```
-
-### List comprehension for filtering/mapping
-```python
-evens = [x for x in arr if x % 2 == 0]
-doubled = [x * 2 for x in arr]
-```
-
-### Prefix sum
-```python
-from itertools import accumulate
-prefix = [0] + list(accumulate(arr))
-# prefix[i+1] = arr[0]+...+arr[i]
-# sum(l, r) = prefix[r+1] - prefix[l]
-```
-
-### Two-pointer pattern (Pythonic)
-```python
-left, right = 0, len(arr) - 1
-while left < right:
-    # process arr[left] and arr[right]
-    left += 1   # or right -= 1 based on condition
+### Remove duplicates from sorted vector
+```cpp
+std::sort(arr.begin(), arr.end());
+arr.erase(std::unique(arr.begin(), arr.end()), arr.end());
 ```
 
 ---
@@ -130,11 +78,11 @@ Question involves contiguous subarray?
 ├── Fixed size k          → Sliding Window (fixed)
 ├── Variable size         → Sliding Window (variable) or Prefix Sum
 ├── Maximum/minimum sum   → Kadane's
-└── Count subarrays = k   → Prefix Sum + HashMap
+└── Count subarrays = k   → Prefix Sum + std::unordered_map
 
 Question asks for a pair/triplet?
 ├── Array is sorted       → Two Pointer (opposite ends)
-└── Array unsorted        → HashMap O(n) or Sort first then Two Pointer
+└── Array unsorted        → std::unordered_map O(n) or Sort first then Two Pointer
 
 Question involves all elements in range [1..n]?
 ├── Find missing          → Expected sum − actual sum, OR frequency array
